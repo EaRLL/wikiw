@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "WikiW.h"
-#include "MainFrm.h"
+#include "wApp.h"
+#include "wBase.h"
 
-IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
+IMPLEMENT_DYNAMIC ( CWikiBase, CFrameWnd )
 
-BEGIN_MESSAGE_MAP ( CMainFrame, CFrameWnd )
+BEGIN_MESSAGE_MAP ( CWikiBase, CFrameWnd )
 	ON_WM_PAINT ( )
 END_MESSAGE_MAP()
 
-CMainFrame::CMainFrame()
+CWikiBase::CWikiBase ( )
 {
 	m_hIcon = AfxGetApp ( )->LoadIcon ( IDI_MAINICON );
 }
 
-CMainFrame::~CMainFrame()
+CWikiBase::~CWikiBase ( )
 {
 }
 
-void CMainFrame::OnPaint ( void )
+void CWikiBase::OnPaint ( void )
 {
 	SetIcon ( m_hIcon, TRUE );
 	SetIcon ( m_hIcon, FALSE );
@@ -26,7 +26,7 @@ void CMainFrame::OnPaint ( void )
 }
 
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CWikiBase::PreCreateWindow ( CREATESTRUCT& cs )
 {
 	if ( !CFrameWnd::PreCreateWindow ( cs ) )
 		return FALSE;

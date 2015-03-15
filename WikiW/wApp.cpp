@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "WikiW.h"
+#include "wApp.h"
 
 #pragma comment( user, "Compiled on " __DATE__ " at " __TIME__ )
 #pragma comment( compiler )
@@ -22,7 +22,7 @@ BOOL CWikiWApp::InitInstance()
 
 	EnableTaskbarInteraction(FALSE); ///
 	SetRegistryKey(_T("WikiW"));
-	pFrame = new CMainFrame;
+	pFrame = new CWikiBase;
 
 	BOOL rc = pFrame->Create ( NULL, L"text", WS_OVERLAPPEDWINDOW, CRect ( 0, 0, 0, 0 ) );
 	if ( !rc )

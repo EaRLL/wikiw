@@ -15,30 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WikiW.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WikiW.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
+    <ClCompile Include="wCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,27 +56,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\WikiW.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\app.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\app.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Octopus-256.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Octopus-256.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Feather-256.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Feather-256.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\47flat_by_studio4.ico">
       <Filter>Resource Files</Filter>
     </Image>
