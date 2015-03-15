@@ -1,3 +1,21 @@
+/*
+* This file is part of WikiW <https://github.com/EaRLL/wikiw>.
+*
+* File: stdafx.h
+*
+* WikiW is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* WikiW is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #pragma once
 
 #ifndef VC_EXTRALEAN
@@ -10,12 +28,12 @@
 #include <afxwin.h>
 //#include <afxext.h>
 
-//#ifndef _AFX_NO_OLE_SUPPORT
-//#include <afxdtctl.h>
-//#endif
-//#ifndef _AFX_NO_AFXCMN_SUPPORT
-//#include <afxcmn.h>
-//#endif
+#ifndef _AFX_NO_OLE_SUPPORT
+#include <afxdtctl.h>
+#endif
+#ifndef _AFX_NO_AFXCMN_SUPPORT
+#include <afxcmn.h>
+#endif
 
 //#include <afxcontrolbars.h>
 
@@ -30,5 +48,7 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
+
+#include <fstream>
 
 #pragma comment(lib,"Version.lib")

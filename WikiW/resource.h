@@ -2,6 +2,11 @@
 // Microsoft Visual C++ generated include file.
 // Used by WikiW.rc
 //
+#define IDC_B_OPTIONS                   100
+#define IDC_B_TITLE                     103
+#define IDC_CMAINTAB                    104
+#define IDC_BBBAT3                      105
+#define IDC_BBBAT4                      106
 #define IDR_MAINFRAME                   128
 #define IDR_WikiWTYPE                   130
 #define IDI_MAINICON                    316
