@@ -23,8 +23,6 @@ BOOL CWikiWApp::InitInstance()
 	EnableTaskbarInteraction(FALSE); ///
 	SetRegistryKey(_T("WikiW"));
 	pFrame = new CMainFrame;
-	//if (!pFrame)
-	//	return FALSE;
 
 	BOOL rc = pFrame->Create ( NULL, L"text", WS_OVERLAPPEDWINDOW, CRect ( 0, 0, 0, 0 ) );
 	if ( !rc )
@@ -34,7 +32,6 @@ BOOL CWikiWApp::InitInstance()
 	}
 
 	pFrame->SetWindowPos ( NULL, 100, 100, 300, 300, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
-	//pFrame->LoadFrame(IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL, NULL);
 	pFrame->ShowWindow(SW_SHOW);
 	pFrame->UpdateWindow();
 

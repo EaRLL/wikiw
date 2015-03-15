@@ -14,6 +14,7 @@
     <ProjectGuid>{6011A74B-0479-424D-965A-DEDF15F79627}</ProjectGuid>
     <RootNamespace>WikiW</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <ProjectName>wikiw</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -96,7 +97,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ChildView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -104,7 +104,6 @@
     <ClInclude Include="WikiW.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -119,6 +118,14 @@
     <None Include="res\WikiW.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\47flat_by_studio4.ico" />
+    <Image Include="res\47flat_by_studio4.png" />
+    <Image Include="res\app.ico" />
+    <Image Include="res\app.png" />
+    <Image Include="res\Feather-256.ico" />
+    <Image Include="res\Feather-256.png" />
+    <Image Include="res\Octopus-256.ico" />
+    <Image Include="res\Octopus-256.png" />
     <Image Include="res\WikiW.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
