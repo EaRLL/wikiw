@@ -25,50 +25,30 @@ IMPLEMENT_DYNAMIC ( CWikiBase, CFrameWnd )
 BEGIN_MESSAGE_MAP ( CWikiBase, CFrameWnd )
 	ON_WM_PAINT ( )
 	ON_NOTIFY ( TCN_SELCHANGE, IDC_CMAINTAB, OnSelchangeTab )
-	//ON_NOTIFY ( TCN_SELCHANGING, IDC_CMAINTAB, OnSelchangingTab )
+	ON_NOTIFY ( TCN_SELCHANGING, IDC_CMAINTAB, OnSelchangingTab )
 END_MESSAGE_MAP()
 
-/*void CWikiBase::OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult )
+void CWikiBase::OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult )
 {
-	if ( m_TabCtrl.GetCurSel ( ) != m_TabCtrl.GetCurFocus ( ) && ActiveTabID != m_TabCtrl.GetCurSel ( ) )
-	{
-		CString xRGBColor; xRGBColor.Format ( _T ( "%d, %d, %d" ), m_TabCtrl.GetCurSel ( ), m_TabCtrl.GetCurFocus ( ), ActiveTabID );
-		SetWindowText ( xRGBColor );
-		m_pActiveTab->ShowWindow ( SW_HIDE );
-	}
-	
-	TCITEM tci;
-	tci.mask = TCIF_PARAM;
-	m_TabCtrl->GetItem ( m_TabCtrl->GetCurFocus ( ), &tci );
-	
-	if ( CWnd *m_pInfo = ( CWnd* ) tci.lParam )
-	{
-		m_pInfo->ShowWindow ( SW_HIDE );
-		//m_pInfo->UpdateWindow ( );
-	}
-	//*pResult = 0;
-	
-}*/
+	//CString xRGBColor; xRGBColor.Format ( _T ( "%d, %d, %d" ), m_TabCtrl.GetCurSel ( ), m_TabCtrl.GetCurFocus ( ), ActiveTabID );
+	//SetWindowText ( xGetTime() + L"|" + xRGBColor );
+}
 
 void CWikiBase::OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult )
 {
-	//TCITEM tci;
-	//tci.mask = TCIF_PARAM;
-	//m_TabCtrl->GetItem ( m_TabCtrl->GetCurSel ( ), &tci );
-	//		CString xRGBColor; xRGBColor.Format ( _T ( "%d, %d, %d" ), m_TabCtrl.GetCurSel ( ), m_TabCtrl.GetCurFocus ( ), ActiveTabID );
-	//		SetWindowText ( xRGBColor );
+	CString xRGBColor; xRGBColor.Format ( _T ( "%d, %d, %d" ), m_TabCtrl.GetCurSel ( ), m_TabCtrl.GetCurFocus ( ), ActiveTabID );
+	SetWindowText ( xGetTime ( ) + L"|" + xRGBColor );
 	if ( ActiveTabID != m_TabCtrl.GetCurSel ( ) )
 		if ( CWnd *m_pInfo = ( CWnd* ) m_pPages[ m_TabCtrl.GetCurSel ( ) ] )
 		{
-			//m_pActiveTab->ShowWindow ( SW_HIDE );
-			m_pPages[ ActiveTabID ]->ShowWindow ( SW_HIDE );
-			m_pInfo->ShowWindow ( SW_SHOW );
-			m_pInfo->UpdateWindow ( );
-			m_pActiveTab = NULL;
+			m_pActiveTab->ShowWindow ( SW_HIDE );
 			m_pActiveTab = m_pInfo;
+			m_pActiveTab->ShowWindow ( SW_SHOW );
+			m_TabCtrl.UpdateWindow ( );
+			m_pActiveTab->UpdateWindow ( );
 			ActiveTabID = m_TabCtrl.GetCurSel ( );
 		}
-	//*pResult = 0;
+	*pResult = 0;
 }
 
 CWikiBase::CWikiBase ( )
@@ -112,44 +92,9 @@ void CWikiBase::CreateChildControls ( void )
 	b_Title.SetFont ( &f_TitleButBig );
 	b_Title.Draggable = true;
 
-	//CTabCtrl* m_TabCtrl = new CTabCtrl;
-
 	m_TabCtrl.Create ( TCS_TABS | TCS_FIXEDWIDTH | WS_CHILD | WS_VISIBLE,
 					   CRect ( 10, 50, 575, 350 ), this, IDC_CMAINTAB );
 
-	/*TCITEM tcItem;
-
-	tcItem.mask = TCIF_TEXT;
-	tcItem.pszText = _T ( "Tab #1" );
-	m_TabCtrl->InsertItem ( 0, &tcItem );
-
-	tcItem.mask = TCIF_TEXT;
-	tcItem.pszText = _T ( "Tab #2" );
-	m_TabCtrl->InsertItem ( 1, &tcItem );
-
-	m_TabCtrl->SetFont ( &f_TitleButBig );
-
-	CWikiBasePage1* pPage1 = new CWikiBasePage1;
-	tcItem.mask = TCIF_PARAM;
-	tcItem.lParam = ( LPARAM ) pPage1;
-	m_TabCtrl->SetItem ( 0, &tcItem );
-	pPage1->Create ( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect ( 20, 85, 565, 340 ), this, NULL, NULL );
-	pPage1->ShowWindow ( SW_SHOW );
-	pPage1->CreateChildControls ( );
-	pPage1->UpdateWindow ( );
-
-	CWikiBasePage2* pPage2 = new CWikiBasePage2;
-	tcItem.mask = TCIF_PARAM;
-	tcItem.lParam = ( LPARAM ) pPage2;
-	m_TabCtrl->SetItem ( 1, &tcItem );
-	pPage2->Create ( NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect ( 20, 85, 565, 340 ), this, NULL, NULL );
-	pPage2->ShowWindow ( SW_HIDE );
-	pPage2->CreateChildControls ( );
-	pPage2->UpdateWindow ( );*/
-
-
-
-	//CWikiBasePage1* pPage1 = new CWikiBasePage1;
 	m_pPages.push_back ( new CWikiBasePage1 );
 	TCITEM tcItem1;
 	tcItem1.mask = TCIF_TEXT;
@@ -159,12 +104,7 @@ void CWikiBase::CreateChildControls ( void )
 	(( CWikiBasePage1 *) m_pPages[ 0 ])->CreateChildControls ( );
 	m_pPages[ 0 ]->UpdateWindow ( );
 	m_pPages[ 0 ]->ShowWindow ( SW_SHOW );
-	//TCITEM ptcItem1;
-	//ptcItem1.mask = TCIF_PARAM;
-	//ptcItem1.lParam = ( LPARAM ) pPage1;
-	//m_TabCtrl->SetItem ( 0, &ptcItem1 );
 
-	//CWikiBasePage2* pPage2 = new CWikiBasePage2;
 	m_pPages.push_back ( new CWikiBasePage2 );
 	TCITEM tcItem2;
 	tcItem2.mask = TCIF_TEXT;
@@ -174,45 +114,11 @@ void CWikiBase::CreateChildControls ( void )
 	( ( CWikiBasePage2 * ) m_pPages[ 1 ] )->CreateChildControls ( );
 	m_pPages[ 1 ]->UpdateWindow ( );
 	m_pPages[ 1 ]->ShowWindow ( SW_HIDE );
-	//TCITEM ptcItem2;
-	//ptcItem2.mask = TCIF_PARAM;
-	//ptcItem2.lParam = ( LPARAM ) pPage2;
-	//m_TabCtrl->SetItem ( 1, &ptcItem2 );
 
 	m_pActiveTab = m_pPages[ 0 ];
 	ActiveTabID = 0;
 
 	m_TabCtrl.SetFont ( &f_TitleButBig );
-
-	/*BOOL rc = pPage1->Create ( NULL, L"text", WS_OVERLAPPEDWINDOW, CRect ( 0, 0, 0, 0 ), this, NULL, NULL );
-	if ( !rc )
-	{
-		TRACE0 ( "\n Îøèáêà 1\n" );
-		exit ( 1 );
-	}
-	pPage1->SetWindowPos ( NULL, 20, 60, 500, 300, SWP_NOSIZE | SWP_NOZORDER );
-	pPage1->CreateChildControls ( );
-	pPage1->ShowWindow ( SW_SHOW );
-	pPage1->UpdateWindow ( );*/
-
-	/*CWikiBasePage1* pPage1;
-	pPage1 = new CWikiBasePage1;
-	tcItem.mask = TCIF_PARAM;
-	tcItem.lParam = ( LPARAM ) pPage1;
-	m_TabCtrl->SetItem ( 0, &tcItem );
-	//VERIFY ( pPage1->Create ( CWikiBasePage1, &m_TabCtrl ) );
-	pPage1->SetWindowPos ( NULL, 10, 30, 0, 0, SWP_NOSIZE | SWP_NOZORDER );
-	pPage1->ShowWindow ( SW_SHOW );
-
-	CWikiBasePage2* pPage2;
-	pPage2 = new CWikiBasePage2;
-	tcItem.mask = TCIF_PARAM;
-	tcItem.lParam = ( LPARAM ) pPage2;
-	m_TabCtrl->SetItem ( 1, &tcItem );
-	//VERIFY ( pPage1->Create ( CWikiBasePage2, &m_ctrTab ) );
-	pPage2->SetWindowPos ( NULL, 10, 30, 0, 0, SWP_NOSIZE | SWP_NOZORDER );
-	pPage2->ShowWindow ( SW_HIDE );*/
-
 }
 
 

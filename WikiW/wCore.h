@@ -25,6 +25,7 @@ void      xCheckVersion ( );
 CRect     xGetMonitorWorkArea ( const CPoint& point );
 CRect     xGetMonitorWorkArea ( CWnd* pWnd );
 void      xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName );
+CString   xGetTime ( );
 
 class xWOptions
 {

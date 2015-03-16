@@ -77,8 +77,24 @@ void xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName
 		);
 }
 
-// MonitorAPI
+CString xGetTime ( )
+{
+	time_t rawtime;
+	struct tm timeinfo;
+	char buffer[ 80 ];
+	CString resultSr;
 
+	time ( &rawtime );
+	localtime_s ( &timeinfo, &rawtime );
+
+	strftime ( buffer, 80, "Сейчас %Y, %A, %B %d, %X", &timeinfo );
+
+	resultSr = buffer;
+
+	return resultSr;
+}
+
+// MonitorAPI
 struct MonitorAPI
 {
 	MonitorAPI ( );
