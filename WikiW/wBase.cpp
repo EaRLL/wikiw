@@ -96,12 +96,17 @@ LRESULT CWikiBase::OnNcHitTest ( CPoint point ) // move window
 void CWikiBase::OnWindowPosChanging ( WINDOWPOS* lpwndpos )
 {
 	CFrameWnd::OnWindowPosChanging ( lpwndpos );
+	if ( !isWindowMinimized )
+	{
+		CRect rcMonitor;
+		this->GetWindowRect ( &rcMonitor );
 
-	CRect rcMonitor;
-	this->GetWindowRect ( &rcMonitor );
+		theApp.WindowTop = rcMonitor.top;
+		theApp.WindowLeft = rcMonitor.left;
 
-	theApp.WindowTop = rcMonitor.top;
-	theApp.WindowLeft = rcMonitor.left;
+		theApp.app_title.Format ( _T ( "%d, %d" ), theApp.WindowTop, theApp.WindowLeft );
+		SetWindowText ( theApp.app_title );
+	}
 }
 
 BOOL CWikiBase::PreCreateWindow ( CREATESTRUCT& cs )
@@ -130,6 +135,7 @@ void CWikiBase::OnSize ( UINT nType, int cx, int cy )
 		break;
 	case SIZE_RESTORED:
 		UpdateWindow ( );
+		isWindowMinimized = false;
 		break;
 	default:
 		// 
@@ -140,6 +146,7 @@ void CWikiBase::OnSize ( UINT nType, int cx, int cy )
 void CWikiBase::OnBHideAppClick ( void )
 {
 	ShowWindow ( SW_MINIMIZE );
+	isWindowMinimized = true;
 	return afx_msg void ( );
 }
 
@@ -160,23 +167,13 @@ void CWikiBase::CreateChildControls ( void )
 
 	xCreateFastFont ( f_blM_Main, 26, 600, _T ( "Tahoma" ) );
 
-	/*if ( rcMonitorCheck.right < WindowWidth )
-	WindowWidth = WindowWidth + ( WindowWidth - rcMonitorCheck.right );
-	if ( rcMonitorCheck.bottom < WindowHeight )
-	WindowHeight = WindowHeight + ( WindowHeight - rcMonitorCheck.bottom );
-
-	WindowTop = ( int ) round ( ( rcMonitor.bottom - WindowHeight ) / 2 );
-	WindowLeft = ( int ) round ( ( rcMonitor.right - WindowWidth ) / 2 );*/
-
-	//theApp.app_title.Format ( _T ( "%d, %d, %d, %d" ), rcMonitorCheck.top, rcMonitorCheck.right, rcMonitorCheck.bottom, rcMonitorCheck.left );
-
 	b_CloseApp.Create ( L"X", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ), this, IDC_B_CLOSEAPP );
 	b_HideApp.Create ( L"_", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ), this, IDC_B_HIDEAPP );
-	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 40, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
+	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
 	b_Title.Draggable = true;
 
 
-	b_lM_Opener.Create ( L"《", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 1, 40, 349 ), this, IDC_B_LEFT_OPENER );
+	b_lM_Opener.Create ( L"《", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 30, 30, 349 ), this, IDC_B_LEFT_OPENER );
 	//b_lM_Main.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
 	//b_lM_User.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
 	b_lM_Opener.SetFont ( &f_blM_Main );

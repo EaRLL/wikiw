@@ -40,6 +40,7 @@ public:
 				b_lM_Opener, b_lM_Main, b_lM_User; // Left menu
 	CFont f_blM_Main;
 	CTabCtrl m_TabCtrl;
+	BOOL isWindowMinimized = false;
 
 protected:
 	HICON m_hIcon;
