@@ -42,7 +42,7 @@ BOOL CWikiWApp::InitInstance()
 	SetRegistryKey(_T("WikiW"));
 	pFrame = new CWikiBase;
 
-	BOOL rc = pFrame->Create ( NULL, L"text", WS_OVERLAPPEDWINDOW, CRect ( 0, 0, 0, 0 ) );
+	BOOL rc = pFrame->Create ( NULL, L"WikiW", WS_POPUP /* WS_OVERLAPPEDWINDOW*/, CRect ( 0, 0, 0, 0 ) );
 	if ( !rc )
 	{
 		TRACE0 ( "\n Îøèáêà 1\n" );
@@ -58,6 +58,18 @@ BOOL CWikiWApp::InitInstance()
 
 	xCheckVersion ( );
 	theApp.app_title = L"WikiW [" + so.m_wsVersion + L"]";
+
+	pFrame->SetWindowPos ( NULL, WindowLeft, WindowTop, WindowWidth, WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
+
+	CRect rcMonitorCheck;
+	pFrame->GetClientRect ( &rcMonitorCheck );
+	if ( rcMonitorCheck.right < WindowWidth )
+		WindowWidth = WindowWidth + ( WindowWidth - rcMonitorCheck.right );
+	if ( rcMonitorCheck.bottom < WindowHeight )
+		WindowHeight = WindowHeight + ( WindowHeight - rcMonitorCheck.bottom );
+
+	WindowTop = ( int ) round ( ( rcMonitor.bottom - WindowHeight ) / 2 );
+	WindowLeft = ( int ) round ( ( rcMonitor.right - WindowWidth ) / 2 );
 
 	pFrame->SetWindowPos ( NULL, WindowLeft, WindowTop, WindowWidth, WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
 	pFrame->CreateChildControls ( );

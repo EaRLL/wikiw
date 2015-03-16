@@ -1,4 +1,4 @@
-/*
+﻿/*
 * This file is part of WikiW <https://github.com/EaRLL/wikiw>.
 *
 * File: wBase.cpp
@@ -24,9 +24,24 @@ IMPLEMENT_DYNAMIC ( CWikiBase, CFrameWnd )
 
 BEGIN_MESSAGE_MAP ( CWikiBase, CFrameWnd )
 	ON_WM_PAINT ( )
+	ON_WM_ERASEBKGND ( )
+	ON_WM_NCHITTEST ( )
+	ON_WM_SIZE ( )
+	ON_WM_WINDOWPOSCHANGING ( )
 	ON_NOTIFY ( TCN_SELCHANGE, IDC_CMAINTAB, OnSelchangeTab )
 	ON_NOTIFY ( TCN_SELCHANGING, IDC_CMAINTAB, OnSelchangingTab )
-END_MESSAGE_MAP()
+	ON_BN_CLICKED ( IDC_B_HIDEAPP, OnBHideAppClick )
+	ON_BN_CLICKED ( IDC_B_CLOSEAPP, OnBCloseAppClick )
+END_MESSAGE_MAP ( )
+
+CWikiBase::CWikiBase ( )
+{
+	m_hIcon = AfxGetApp ( )->LoadIcon ( IDI_MAINICON );
+}
+
+CWikiBase::~CWikiBase ( )
+{
+}
 
 void CWikiBase::OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult )
 {
@@ -36,8 +51,6 @@ void CWikiBase::OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult )
 
 void CWikiBase::OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult )
 {
-	CString xRGBColor; xRGBColor.Format ( _T ( "%d, %d, %d" ), m_TabCtrl.GetCurSel ( ), m_TabCtrl.GetCurFocus ( ), ActiveTabID );
-	SetWindowText ( xGetTime ( ) + L"|" + xRGBColor );
 	if ( ActiveTabID != m_TabCtrl.GetCurSel ( ) )
 		if ( CWnd *m_pInfo = ( CWnd* ) m_pPages[ m_TabCtrl.GetCurSel ( ) ] )
 		{
@@ -51,15 +64,6 @@ void CWikiBase::OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult )
 	*pResult = 0;
 }
 
-CWikiBase::CWikiBase ( )
-{
-	m_hIcon = AfxGetApp ( )->LoadIcon ( IDI_MAINICON );
-}
-
-CWikiBase::~CWikiBase ( )
-{
-}
-
 void CWikiBase::OnPaint ( void )
 {
 	SetIcon ( m_hIcon, TRUE );
@@ -68,25 +72,117 @@ void CWikiBase::OnPaint ( void )
 	return afx_msg void ( );
 }
 
+BOOL CWikiBase::OnEraseBkgnd ( CDC* pDC )
+{
+	CBrush backBrush ( so.SKIN_COLOR_APP_BG );
+	CBrush* pOldBrush = pDC->SelectObject ( &backBrush );
+	CRect rect;
+	pDC->GetClipBox ( &rect );
+	pDC->PatBlt ( rect.left, rect.top, rect.Width ( ), rect.Height ( ), PATCOPY );
+	pDC->SelectObject ( pOldBrush );
+	pDC->FrameRect ( rect, &so.SKIN_COLOR_APP_BORDER );
+
+	return TRUE;
+}
+
+LRESULT CWikiBase::OnNcHitTest ( CPoint point ) // move window
+{
+	UINT ret = ( UINT ) CFrameWnd::OnNcHitTest ( point );
+	if ( ret == HTCLIENT )
+		return HTCAPTION;
+	return ret;
+}
+
+void CWikiBase::OnWindowPosChanging ( WINDOWPOS* lpwndpos )
+{
+	CFrameWnd::OnWindowPosChanging ( lpwndpos );
+
+	CRect rcMonitor;
+	this->GetWindowRect ( &rcMonitor );
+
+	theApp.WindowTop = rcMonitor.top;
+	theApp.WindowLeft = rcMonitor.left;
+}
 
 BOOL CWikiBase::PreCreateWindow ( CREATESTRUCT& cs )
 {
 	if ( !CFrameWnd::PreCreateWindow ( cs ) )
 		return FALSE;
-	cs.style = WS_EX_CLIENTEDGE | /*WS_THICKFRAME |*/ WS_MINIMIZEBOX | WS_SYSMENU;
+	/*
+	cs.style = WS_EX_CLIENTEDGE | WS_MINIMIZEBOX | WS_SYSMENU;
 	//cs.dwExStyle &= ~( WS_EX_CLIENTEDGE | WS_MAXIMIZEBOX );
-	//cs.dwExStyle &= WS_OVERLAPPED | WS_CAPTION | FWS_ADDTOTITLE | WS_THICKFRAME | WS_MINIMIZEBOX | WS_SYSMENU;
-
+	cs.dwExStyle &= WS_OVERLAPPED;// | WS_CAPTION | FWS_ADDTOTITLE | WS_THICKFRAME | WS_MINIMIZEBOX | WS_SYSMENU;
+	//cs.dwExStyle &= ~( WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_CAPTION | WS_THICKFRAME | WS_SYSMENU );
+	*/
+	cs.dwExStyle &= ~( WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_CAPTION | WS_THICKFRAME | WS_SYSMENU );
 	return TRUE;
+}
+
+void CWikiBase::OnSize ( UINT nType, int cx, int cy )
+{
+	switch ( nType )
+	{
+	case SIZE_MAXIMIZED:
+		// window was maximized
+		break;
+	case SIZE_MINIMIZED:
+		// window was minimized
+		break;
+	case SIZE_RESTORED:
+		UpdateWindow ( );
+		break;
+	default:
+		// 
+		break;
+	}
+}
+
+void CWikiBase::OnBHideAppClick ( void )
+{
+	ShowWindow ( SW_MINIMIZE );
+	return afx_msg void ( );
+}
+
+void CWikiBase::OnBCloseAppClick ( void )
+{
+	BOOL rc = DestroyWindow ( );
+	if ( !rc )
+	{
+		TRACE0 ( "\n Ошибка 7. Окно не было разрушено \n" );
+		exit ( 7 );
+	}
+	return afx_msg void ( );
 }
 
 void CWikiBase::CreateChildControls ( void )
 {
 	SetWindowText ( theApp.app_title );
 
-	xCreateFastFont ( f_TitleButBig, 20, 600, _T ( "Jura" ) );
+	xCreateFastFont ( f_blM_Main, 26, 600, _T ( "Tahoma" ) );
 
-	b_Options.Create ( L"���������", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 220, 10, 350, 40 ), this, IDC_B_OPTIONS );
+	/*if ( rcMonitorCheck.right < WindowWidth )
+	WindowWidth = WindowWidth + ( WindowWidth - rcMonitorCheck.right );
+	if ( rcMonitorCheck.bottom < WindowHeight )
+	WindowHeight = WindowHeight + ( WindowHeight - rcMonitorCheck.bottom );
+
+	WindowTop = ( int ) round ( ( rcMonitor.bottom - WindowHeight ) / 2 );
+	WindowLeft = ( int ) round ( ( rcMonitor.right - WindowWidth ) / 2 );*/
+
+	//theApp.app_title.Format ( _T ( "%d, %d, %d, %d" ), rcMonitorCheck.top, rcMonitorCheck.right, rcMonitorCheck.bottom, rcMonitorCheck.left );
+
+	b_CloseApp.Create ( L"X", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ), this, IDC_B_CLOSEAPP );
+	b_HideApp.Create ( L"_", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ), this, IDC_B_HIDEAPP );
+	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 40, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
+	b_Title.Draggable = true;
+
+
+	b_lM_Opener.Create ( L"《", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 1, 40, 349 ), this, IDC_B_LEFT_OPENER );
+	//b_lM_Main.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
+	//b_lM_User.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
+	b_lM_Opener.SetFont ( &f_blM_Main );
+
+	/*
+	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 220, 10, 350, 40 ), this, IDC_B_OPTIONS );
 	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
 	b_Options.SetFont ( &f_TitleButBig );
 	b_Title.SetFont ( &f_TitleButBig );
@@ -103,7 +199,7 @@ void CWikiBase::CreateChildControls ( void )
 	m_pPages[ 0 ]->Create ( NULL, NULL, NULL, CRect ( 20, 85, 365, 340 ), this, NULL, NULL );
 	(( CWikiBasePage1 *) m_pPages[ 0 ])->CreateChildControls ( );
 	m_pPages[ 0 ]->UpdateWindow ( );
-	m_pPages[ 0 ]->ShowWindow ( SW_SHOW );
+	m_pPages[ 0 ]->ShowWindow ( SW_HIDE );
 
 	m_pPages.push_back ( new CWikiBasePage2 );
 	TCITEM tcItem2;
@@ -119,6 +215,9 @@ void CWikiBase::CreateChildControls ( void )
 	ActiveTabID = 0;
 
 	m_TabCtrl.SetFont ( &f_TitleButBig );
+
+	m_TabCtrl.ShowWindow ( SW_HIDE );
+	*/
 }
 
 
@@ -143,7 +242,7 @@ void CWikiBasePage1::CreateChildControls ( void )
 
 	xCreateFastFont ( f_TitleButBig, 20, 600, _T ( "Jura" ) );
 
-	b_Options.Create ( L"���������", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 250, 130 ), this, IDC_BBBAT3 );
+	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 250, 130 ), this, IDC_BBBAT3 );
 	b_Options.SetFont ( &f_TitleButBig );
 }
 
@@ -168,6 +267,6 @@ void CWikiBasePage2::CreateChildControls ( void )
 
 	xCreateFastFont ( f_TitleButBig, 20, 600, _T ( "Jura" ) );
 
-	b_Options.Create ( L"���������", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 260, 10, 550, 130 ), this, IDC_BBBAT4 );
+	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 260, 10, 550, 130 ), this, IDC_BBBAT4 );
 	b_Options.SetFont ( &f_TitleButBig );
 }

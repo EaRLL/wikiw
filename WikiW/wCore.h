@@ -24,6 +24,7 @@
 void      xCheckVersion ( );
 CRect     xGetMonitorWorkArea ( const CPoint& point );
 CRect     xGetMonitorWorkArea ( CWnd* pWnd );
+CRect     xGetMonitorRect ( CWnd* pWnd );
 void      xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName );
 CString   xGetTime ( );
 
@@ -35,7 +36,10 @@ public:
 	WORD      m_wnVersion[ 4 ];
 
 	INT       APP_WIDTH = 600;
-	INT       APP_HEIGHT = 400;
+	INT       APP_HEIGHT = 350;
+
+	COLORREF SKIN_COLOR_APP_BG = RGB ( 45, 45, 48 ); // wBase
+	CBrush   SKIN_COLOR_APP_BORDER = RGB ( 0, 122, 204 ); // wBase
 
 	BOOL     OPT_FBTN_SET_CROSS_ONMOVE     = TRUE; // CFlatButton
 	CBrush   SKIN_COLOR_FBTN_BORDER_NORMAL = RGB ( 0, 122, 204 ); // CFlatButton
