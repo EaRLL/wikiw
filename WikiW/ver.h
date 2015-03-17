@@ -14,7 +14,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+* along with WikiW.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
 
@@ -24,14 +24,10 @@
 #define APP_VERSION_MAJOR               1
 #define APP_VERSION_MINOR               0
 #define APP_VERSION_REVISION            1
-#define APP_VERSION_BUILD               435
+#define APP_VERSION_BUILD               475
 
 #define APP_VERSION_FILE                APP_VERSION_MAJOR, APP_VERSION_MINOR, APP_VERSION_REVISION, APP_VERSION_BUILD
 #define APP_VERSION_FILE_STR            STRINGIZE(APP_VERSION_MAJOR) "." STRINGIZE ( APP_VERSION_MINOR ) "." STRINGIZE ( APP_VERSION_REVISION ) " build " STRINGIZE ( APP_VERSION_BUILD )
-
-//#define VERSION_STR "1.6b5"
-//#define VERSION_NUM 1,0x60,beta,5
-// development = 0x20, alpha = 0x40, beta = 0x60, final = 0x80
 
 //#define APP_VERSION_FLAGS               VS_FF_PRERELEASE /* 0 for final, or any of VS_FF_DEBUG,VS_FF_PATCHED,VS_FF_PRERELEASE,VS_FF_PRIVATEBUILD,VS_FF_SPECIALBUILD */
 #define APP_VERSION_COMMENTS            "Beta. Please contact abix.group@gmail.com with any bug reports, suggestions or comments.\0"

@@ -14,7 +14,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+* along with WikiW.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
 
@@ -37,6 +37,7 @@ public:
 	virtual ~CWikiBase ( );
 
 	BOOL isWindowMinimized = false;
+	BOOL isLeftMenuVisible = false;
 	CFlatButton b_Options, b_Title, b_CloseApp, b_HideApp, // main
 				b_lM_Opener, b_lM_Main, b_lM_User; // Left menu
 	CFont f_blM_Main, f_bTopMenu;
@@ -48,10 +49,13 @@ public:
 protected:
 	HICON m_hIcon;
 	DECLARE_DYNAMIC ( CWikiBase )
-	void OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult );
-	void OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult );
 	void OnBHideAppClick ( void );
 	void OnBCloseAppClick ( void );
+	void OnBLMOpenerClick ( void );
+
+	void OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult );
+	void OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult );
+
 	void OnPaint ( void );
 	void OnWindowPosChanging ( WINDOWPOS* lpwndpos );
 	BOOL OnEraseBkgnd ( CDC* pDC );

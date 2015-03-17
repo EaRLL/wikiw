@@ -14,7 +14,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+* along with WikiW.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "stdafx.h"
 #include "wApp.h"
@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP ( CWikiBase, CFrameWnd )
 	ON_NOTIFY ( TCN_SELCHANGING, IDC_CMAINTAB, OnSelchangingTab )
 	ON_BN_CLICKED ( IDC_B_HIDEAPP, OnBHideAppClick )
 	ON_BN_CLICKED ( IDC_B_CLOSEAPP, OnBCloseAppClick )
+	ON_BN_CLICKED ( IDC_B_LEFT_OPENER, OnBLMOpenerClick )
 END_MESSAGE_MAP ( )
 
 CWikiBase::CWikiBase ( )
@@ -74,13 +75,13 @@ void CWikiBase::OnPaint ( void )
 
 BOOL CWikiBase::OnEraseBkgnd ( CDC* pDC )
 {
-	CBrush backBrush ( so.SKIN_COLOR_APP_BG );
+	CBrush backBrush ( so.APP_COLOR_BG );
 	CBrush* pOldBrush = pDC->SelectObject ( &backBrush );
 	CRect rect;
 	pDC->GetClipBox ( &rect );
 	pDC->PatBlt ( rect.left, rect.top, rect.Width ( ), rect.Height ( ), PATCOPY );
 	pDC->SelectObject ( pOldBrush );
-	pDC->FrameRect ( rect, &so.SKIN_COLOR_APP_BORDER );
+	pDC->FrameRect ( rect, &so.APP_COLOR_BORDER );
 
 	return TRUE;
 }
@@ -161,26 +162,69 @@ void CWikiBase::OnBCloseAppClick ( void )
 	return afx_msg void ( );
 }
 
+void CWikiBase::OnBLMOpenerClick ( void )
+{
+	if ( isLeftMenuVisible )
+	{
+		theApp.WindowWidth = theApp.WindowWidth - 200;
+		theApp.WindowLeft = theApp.WindowLeft + 200;
+		this->SetWindowPos ( NULL, theApp.WindowLeft, theApp.WindowTop, theApp.WindowWidth, theApp.WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
+
+		isLeftMenuVisible = false;
+		b_lM_Opener.SetWindowText ( L"«" );
+
+		b_lM_Opener.MoveWindow ( CRect ( 10, 30, 50, 349 ) );
+		b_CloseApp.MoveWindow ( CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ) );
+		b_HideApp.MoveWindow ( CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ) );
+		b_Title.MoveWindow ( CRect ( 1, 1, theApp.WindowWidth - 60, 30 ) );
+		UpdateWindow ( );
+	}
+	else
+	{
+		theApp.WindowWidth = theApp.WindowWidth + 200;
+		theApp.WindowLeft = theApp.WindowLeft - 200;
+
+		this->SetWindowPos ( NULL, theApp.WindowLeft, theApp.WindowTop, theApp.WindowWidth, theApp.WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
+
+		isLeftMenuVisible = true;
+		b_lM_Opener.SetWindowText ( L"»" );
+
+		b_lM_Opener.MoveWindow ( CRect ( 210, 30, 250, 349 ) );
+		b_CloseApp.MoveWindow ( CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ) );
+		b_HideApp.MoveWindow ( CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ) );
+		b_Title.MoveWindow ( CRect ( 1, 1, theApp.WindowWidth - 60, 30 ) );
+		UpdateWindow ( );
+
+	}
+	return afx_msg void ( );
+}
+
 void CWikiBase::CreateChildControls ( void )
 {
 	SetWindowText ( theApp.app_title );
 
 	xCreateFastFont ( f_blM_Main, 26, 600, _T ( "Tahoma" ) );
-	xCreateFastFont ( f_bTopMenu, 16, 600, _T ( "Verdana" ) );
+	xCreateFastFont ( f_bTopMenu, 16, 400, _T ( "Tahoma" ) );
 
 	b_CloseApp.Create ( L"X", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ), this, IDC_B_CLOSEAPP );
 	b_HideApp.Create ( L"_", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ), this, IDC_B_HIDEAPP );
-	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 30, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
+	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 1, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
+
+	b_lM_Opener.Create ( L"«", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 30, 50, 349 ), this, IDC_B_LEFT_OPENER );
+
+	b_CloseApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBMainColors );
+	b_HideApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBMainColors );
+	b_Title.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBMainColors );
+	b_lM_Opener.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBGrayColors );
+
 	b_CloseApp.SetFont ( &f_bTopMenu );
 	b_HideApp.SetFont ( &f_bTopMenu );
 	b_Title.SetFont ( &f_bTopMenu );
+	b_lM_Opener.SetFont ( &f_blM_Main );
+
 	b_Title.Draggable = true;
 
 
-	b_lM_Opener.Create ( L"«", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 1, 30, 349 ), this, IDC_B_LEFT_OPENER ); // »
-	//b_lM_Main.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
-	//b_lM_User.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
-	b_lM_Opener.SetFont ( &f_blM_Main );
 
 	/*
 	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 220, 10, 350, 40 ), this, IDC_B_OPTIONS );

@@ -14,7 +14,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+* along with WikiW.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "stdafx.h"
 #include "wCore.h"
@@ -76,6 +76,11 @@ void xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName
 		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
 		nFontName )
 		);
+}
+
+void xInitFont ( CString nFontName )
+{
+	/*int nResults = */AddFontResourceEx ( nFontName, FR_PRIVATE, NULL );
 }
 
 CString xGetTime ( )

@@ -16,7 +16,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+* along with WikiW.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
 
@@ -41,6 +41,21 @@ public:
 	bool m_bMouseInHouse;
 	bool m_bClicked;
 	HCURSOR m_Hand;
+
+	BOOL     set_cross_onmove = TRUE;
+
+	struct sColors
+	{
+		CBrush   BORDER_NORMAL;
+		COLORREF   FILL_NORMAL;
+		COLORREF   TEXT_NORMAL;
+		CBrush   BORDER_HOVER;
+		COLORREF   FILL_HOVER;
+		COLORREF   TEXT_HOVER;
+		CBrush   BORDER_CDOWN;
+		COLORREF   FILL_CDOWN;
+		COLORREF   TEXT_CDOWN;
+	} *b_Colors;
 
 	bool Draggable; // drag window {
 	bool m_bMoveWindow;

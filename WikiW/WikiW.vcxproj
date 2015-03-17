@@ -125,6 +125,34 @@
     <Image Include="res\47flat_by_studio4.ico" />
     <Image Include="res\47flat_by_studio4.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\fonts\Open_Sans\LICENSE.txt" />
+    <Text Include="res\fonts\Roboto\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\fonts\Open_Sans\OpenSans-Bold.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-BoldItalic.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-ExtraBold.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-ExtraBoldItalic.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-Italic.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-Light.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-LightItalic.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-Regular.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-Semibold.ttf" />
+    <Font Include="res\fonts\Open_Sans\OpenSans-SemiboldItalic.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Black.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-BlackItalic.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Bold.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-BoldItalic.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Italic.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Light.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-LightItalic.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Medium.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-MediumItalic.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Regular.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-Thin.ttf" />
+    <Font Include="res\fonts\Roboto\Roboto-ThinItalic.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

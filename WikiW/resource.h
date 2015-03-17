@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by WikiW.rc
 //
+
 #include "ver.h"
 
 #define IDC_B_OPTIONS                   100
@@ -10,23 +11,20 @@
 #define IDC_B_HIDEAPP                   103
 #define IDC_BBBAT3                      104
 #define IDC_BBBAT4                      105
-
 #define IDC_CMAINTAB                    106
-
-#define IDC_B_LEFT_OPENER               7000
-#define IDC_B_LEFT_MENU_MAIN            7001
-#define IDC_B_LEFT_MENU_USER            7002
-
 #define IDR_MAINFRAME                   128
 #define IDR_WikiWTYPE                   130
 #define IDI_MAINICON                    316
 #define IDB_PNG1                        317
+#define IDC_B_LEFT_OPENER               7000
+#define IDC_B_LEFT_MENU_MAIN            7001
+#define IDC_B_LEFT_MENU_USER            7002
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        318
+#define _APS_NEXT_RESOURCE_VALUE        320
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

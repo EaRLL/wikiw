@@ -16,7 +16,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+* along with WikiW.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "stdafx.h"
 #include "wCore.h"
@@ -85,7 +85,7 @@ void CFlatButton::OnLButtonDown ( UINT nFlags, CPoint point )
 
 void CFlatButton::OnLButtonUp ( UINT nFlags, CPoint point )
 {
-	if ( m_bMoveWindow && so.OPT_FBTN_SET_CROSS_ONMOVE )
+	if ( m_bMoveWindow && set_cross_onmove )
 	{
 		::SetCursor ( AfxGetApp ( )->LoadStandardCursor ( IDC_HAND ) );
 	}
@@ -106,7 +106,7 @@ void CFlatButton::OnMouseMove ( UINT nFlags, CPoint point )
 {
 	if ( m_bMoveWindow )
 	{
-		if ( so.OPT_FBTN_SET_CROSS_ONMOVE )
+		if ( set_cross_onmove )
 			::SetCursor ( AfxGetApp ( )->LoadStandardCursor ( IDC_SIZEALL ) );
 
 		GetCursorPos ( &curPos );
@@ -163,26 +163,26 @@ void CFlatButton::DrawItem ( LPDRAWITEMSTRUCT lpDrawItemStruct )
 	if ( IsMouseInHouse ( ) == false && IsClicked ( ) == false )
 	{
 		// normal
-		pDC->FillSolidRect ( &r, so.SKIN_COLOR_FBTN_FILL_NORMAL );
-		pDC->SetTextColor ( so.SKIN_COLOR_FBTN_TEXT_NORMAL );
+		pDC->FillSolidRect ( &r, b_Colors->FILL_NORMAL );
+		pDC->SetTextColor ( b_Colors->TEXT_NORMAL );
 		pDC->DrawText ( text, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
-		pDC->FrameRect ( &r, &so.SKIN_COLOR_FBTN_BORDER_NORMAL );
+		pDC->FrameRect ( &r, &b_Colors->BORDER_NORMAL );
 
 	}
 	else if ( IsMouseInHouse ( ) && !IsClicked ( ) )
 	{
 		// hover
-		pDC->FillSolidRect ( &r, so.SKIN_COLOR_FBTN_FILL_HOVER );
-		pDC->SetTextColor ( so.SKIN_COLOR_FBTN_TEXT_HOVER );
+		pDC->FillSolidRect ( &r, b_Colors->FILL_HOVER );
+		pDC->SetTextColor ( b_Colors->TEXT_HOVER );
 		pDC->DrawText ( text, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
-		pDC->FrameRect ( &r, &so.SKIN_COLOR_FBTN_BORDER_HOVER );
+		pDC->FrameRect ( &r, &b_Colors->BORDER_HOVER );
 	}
 	else if ( IsMouseInHouse ( ) && IsClicked ( ) )
 	{
 		// clicked
-		pDC->FillSolidRect ( &r, so.SKIN_COLOR_FBTN_FILL_CDOWN );
-		pDC->SetTextColor ( so.SKIN_COLOR_FBTN_TEXT_CDOWN );
+		pDC->FillSolidRect ( &r, b_Colors->FILL_CDOWN );
+		pDC->SetTextColor ( b_Colors->TEXT_CDOWN );
 		pDC->DrawText ( text, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE );
-		pDC->FrameRect ( &r, &so.SKIN_COLOR_FBTN_BORDER_CDOWN );
+		pDC->FrameRect ( &r, &b_Colors->BORDER_CDOWN );
 	}
 }

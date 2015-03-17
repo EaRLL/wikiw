@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\fonts">
+      <UniqueIdentifier>{43c7d508-f564-41db-9f7d-0bbdade08d08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -71,5 +74,81 @@
     <Image Include="res\47flat_by_studio4.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\fonts\Open_Sans\LICENSE.txt">
+      <Filter>Resource Files\fonts</Filter>
+    </Text>
+    <Text Include="res\fonts\Roboto\LICENSE.txt">
+      <Filter>Resource Files\fonts</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\fonts\Open_Sans\OpenSans-Bold.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-BoldItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-ExtraBold.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-ExtraBoldItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-Italic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-Light.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-LightItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-Regular.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-Semibold.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Open_Sans\OpenSans-SemiboldItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Black.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-BlackItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Bold.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-BoldItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Italic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Light.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-LightItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Medium.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-MediumItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Regular.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-Thin.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="res\fonts\Roboto\Roboto-ThinItalic.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>
