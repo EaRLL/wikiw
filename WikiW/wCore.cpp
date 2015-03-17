@@ -23,7 +23,7 @@ xWOptions so;
 
 void xCheckVersion ( )
 {
-	TCHAR szPath[ 260 ];
+	/*TCHAR szPath[ 260 ];
 	DWORD dwSize = 0;
 
 	so.m_wnVersion[ 0 ] = so.m_wnVersion[ 1 ] = so.m_wnVersion[ 2 ] = so.m_wnVersion[ 3 ] = 0;
@@ -53,8 +53,9 @@ void xCheckVersion ( )
 
 		delete[ ] pBuffer;
 	}
-
-	so.m_wsVersion.Format ( _T ( "%i.%i.%i build %i" ), so.m_wnVersion[ 0 ], so.m_wnVersion[ 1 ], so.m_wnVersion[ 2 ], so.m_wnVersion[ 3 ] );
+	*/
+	//so.m_wsVersion.Format ( _T ( "%i.%i.%i build %i" ), so.m_wnVersion[ 0 ], so.m_wnVersion[ 1 ], so.m_wnVersion[ 2 ], so.m_wnVersion[ 3 ] );
+	so.m_wsVersion = APP_VERSION_FILE_STR;
 }
 
 void xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName )

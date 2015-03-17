@@ -39,7 +39,7 @@ public:
 	BOOL isWindowMinimized = false;
 	CFlatButton b_Options, b_Title, b_CloseApp, b_HideApp, // main
 				b_lM_Opener, b_lM_Main, b_lM_User; // Left menu
-	CFont f_blM_Main;
+	CFont f_blM_Main, f_bTopMenu;
 	CTabCtrl m_TabCtrl;
 
 	CWnd *m_pActiveTab;

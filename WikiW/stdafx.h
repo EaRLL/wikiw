@@ -49,6 +49,7 @@
 #endif
 #endif
 
+#include "ver.h"
 #include <time.h>
 #include <fstream>
 #pragma comment(lib,"Version.lib")

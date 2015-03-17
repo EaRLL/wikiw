@@ -98,6 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CFlatButton.h" />
+    <ClInclude Include="ver.h" />
     <ClInclude Include="wBase.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

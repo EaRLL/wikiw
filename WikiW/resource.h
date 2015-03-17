@@ -2,6 +2,8 @@
 // Microsoft Visual C++ generated include file.
 // Used by WikiW.rc
 //
+#include "ver.h"
+
 #define IDC_B_OPTIONS                   100
 #define IDC_B_TITLEAPP                  101
 #define IDC_B_CLOSEAPP                  102

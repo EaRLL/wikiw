@@ -166,14 +166,18 @@ void CWikiBase::CreateChildControls ( void )
 	SetWindowText ( theApp.app_title );
 
 	xCreateFastFont ( f_blM_Main, 26, 600, _T ( "Tahoma" ) );
+	xCreateFastFont ( f_bTopMenu, 16, 600, _T ( "Verdana" ) );
 
 	b_CloseApp.Create ( L"X", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ), this, IDC_B_CLOSEAPP );
 	b_HideApp.Create ( L"_", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ), this, IDC_B_HIDEAPP );
-	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
+	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 30, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
+	b_CloseApp.SetFont ( &f_bTopMenu );
+	b_HideApp.SetFont ( &f_bTopMenu );
+	b_Title.SetFont ( &f_bTopMenu );
 	b_Title.Draggable = true;
 
 
-	b_lM_Opener.Create ( L"《", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 30, 30, 349 ), this, IDC_B_LEFT_OPENER );
+	b_lM_Opener.Create ( L"«", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 0, 1, 30, 349 ), this, IDC_B_LEFT_OPENER ); // »
 	//b_lM_Main.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
 	//b_lM_User.Create ( L"WikiW", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
 	b_lM_Opener.SetFont ( &f_blM_Main );
