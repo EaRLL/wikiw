@@ -1,7 +1,7 @@
 /*
 * This file is part of WikiW <https://github.com/EaRLL/wikiw>.
 *
-* File: ver.h
+* File: CWikiBasePage1.h
 *
 * WikiW is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,13 @@
 */
 #pragma once
 
-#define STRINGIZE2(s) #s
-#define STRINGIZE(s) STRINGIZE2(s)
-
-#define APP_VERSION_MAJOR               1
-#define APP_VERSION_MINOR               0
-#define APP_VERSION_REVISION            1
-#define APP_VERSION_BUILD               539
-
-#define APP_VERSION_FILE                APP_VERSION_MAJOR, APP_VERSION_MINOR, APP_VERSION_REVISION, APP_VERSION_BUILD
-#define APP_VERSION_FILE_STR            STRINGIZE(APP_VERSION_MAJOR) "." STRINGIZE ( APP_VERSION_MINOR ) "." STRINGIZE ( APP_VERSION_REVISION ) " build " STRINGIZE ( APP_VERSION_BUILD )
-
-#define APP_VERSION_COMMENTS            "Beta. Please contact abix.group@gmail.com with any bug reports, suggestions or comments.\0"
+class CWikiBasePage1 : public CWnd
+{
+public:
+	CWikiBasePage1 ( );
+	virtual ~CWikiBasePage1 ( );
+	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
+	void CreateChildControls ( void );
+	CFlatButton b_Options;
+	CFont f_TitleButBig;
+};

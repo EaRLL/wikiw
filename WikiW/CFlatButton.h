@@ -22,8 +22,6 @@
 
 class CFlatButton : public CButton
 {
-	//DECLARE_DYNAMIC ( CFlatButton )
-
 protected:
 	void OnMouseMove ( UINT nFlags, CPoint point );
 	LRESULT OnMouseLeave ( WPARAM wParam, LPARAM lParam );

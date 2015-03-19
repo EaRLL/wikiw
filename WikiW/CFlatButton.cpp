@@ -23,8 +23,6 @@
 #include "wApp.h"
 #include "CFlatButton.h"
 
-//IMPLEMENT_DYNAMIC ( CFlatButton, CButton )
-
 BEGIN_MESSAGE_MAP ( CFlatButton, CButton )
 	ON_WM_LBUTTONDOWN ( )
 	ON_WM_LBUTTONDBLCLK ( )
@@ -117,7 +115,6 @@ void CFlatButton::OnMouseMove ( UINT nFlags, CPoint point )
 		GetParentFrame ( )->SetWindowPos ( NULL, theApp.WindowLeft, theApp.WindowTop, theApp.WindowWidth, theApp.WindowHeight,
 										   SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
 		GetParentFrame ( )->UpdateWindow ( );
-		//GetParentFrame ( )->RedrawWindow ( );
 	}
 
 	if ( !m_bMouseInHouse )

@@ -18,16 +18,6 @@
 */
 #pragma once
 
-#include <iostream>
-#include <vector>
-
-class CWikiBasePage : public CWnd
-{
-public:
-	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
-	void CreateChildControls ( void );
-};
-
 class CWikiBase : public CFrameWnd
 {
 public:
@@ -37,7 +27,7 @@ public:
 	virtual ~CWikiBase ( );
 
 	// { left menu
-		CFlatButton b_lM_Opener, b_lM_Main, b_lM_User, b_lM_Stats; // Left menu buttons
+		CFlatButton b_lM_Opener, b_lM_Main, b_lM_User; // Left menu buttons
 		CFont f_blM_Opener, f_blM_Std; // Buttons font
 
 		BOOL isLeftMenuVisible = false;
@@ -46,7 +36,6 @@ public:
 
 		BOOL isLeftMenuMain = true;
 		BOOL isLeftMenuUser = false;
-		BOOL isLeftMenuStats = false;
 
 		void OnBLMenuButtonClick ( UINT nID );  // Button click
 
@@ -57,9 +46,7 @@ public:
 	BOOL isWindowMinimized = false;
 	CFlatButton b_Options, b_Title, b_CloseApp, b_HideApp; // main
 	CFont f_bTopMenu;
-	CTabCtrl m_TabCtrl;
 
-	CWnd *m_pActiveTab;
 	int ActiveTabID;
 	std::vector<CWnd *> m_pPages;
 protected:
@@ -67,9 +54,6 @@ protected:
 	DECLARE_DYNAMIC ( CWikiBase )
 	void OnBHideAppClick ( void );
 	void OnBCloseAppClick ( void );
-
-	void OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult );
-	void OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult );
 
 	void OnPaint ( void );
 	void OnWindowPosChanging ( WINDOWPOS* lpwndpos );
@@ -81,26 +65,4 @@ protected:
 		return static_cast<HCURSOR>( m_hIcon );
 	};
 	DECLARE_MESSAGE_MAP()
-};
-
-class CWikiBasePage1 : public CWnd
-{
-public:
-	CWikiBasePage1 ( );
-	virtual ~CWikiBasePage1 ( );
-	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
-	void CreateChildControls ( void );
-	CFlatButton b_Options;
-	CFont f_TitleButBig;
-};
-
-class CWikiBasePage2 : public CWnd
-{
-public:
-	CWikiBasePage2 ( );
-	virtual ~CWikiBasePage2 ( );
-	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
-	void CreateChildControls ( void );
-	CFlatButton b_Options;
-	CFont f_TitleButBig;
 };

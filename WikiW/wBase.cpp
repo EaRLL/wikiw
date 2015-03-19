@@ -19,6 +19,8 @@
 #include "stdafx.h"
 #include "wApp.h"
 #include "wBase.h"
+#include "CWikiBasePage1.h"
+#include "CWikiBasePage2.h"
 
 IMPLEMENT_DYNAMIC ( CWikiBase, CFrameWnd )
 
@@ -28,11 +30,9 @@ BEGIN_MESSAGE_MAP ( CWikiBase, CFrameWnd )
 	ON_WM_NCHITTEST ( )
 	ON_WM_SIZE ( )
 	ON_WM_WINDOWPOSCHANGING ( )
-	ON_NOTIFY ( TCN_SELCHANGE, IDC_CMAINTAB, OnSelchangeTab )
-	ON_NOTIFY ( TCN_SELCHANGING, IDC_CMAINTAB, OnSelchangingTab )
 	ON_BN_CLICKED ( IDC_B_HIDEAPP, OnBHideAppClick )
 	ON_BN_CLICKED ( IDC_B_CLOSEAPP, OnBCloseAppClick )
-	ON_CONTROL_RANGE ( BN_CLICKED, IDC_B_LEFT_OPENER, IDC_B_LEFT_MENU_STATS, OnBLMenuButtonClick )
+	ON_CONTROL_RANGE ( BN_CLICKED, IDC_B_LEFT_OPENER, IDC_B_LEFT_MENU_USER, OnBLMenuButtonClick )
 END_MESSAGE_MAP ( )
 
 CWikiBase::CWikiBase ( )
@@ -42,27 +42,6 @@ CWikiBase::CWikiBase ( )
 
 CWikiBase::~CWikiBase ( )
 {
-}
-
-void CWikiBase::OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult )
-{
-	//CString xRGBColor; xRGBColor.Format ( _T ( "%d, %d, %d" ), m_TabCtrl.GetCurSel ( ), m_TabCtrl.GetCurFocus ( ), ActiveTabID );
-	//SetWindowText ( xGetTime() + L"|" + xRGBColor );
-}
-
-void CWikiBase::OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult )
-{
-	if ( ActiveTabID != m_TabCtrl.GetCurSel ( ) )
-		if ( CWnd *m_pInfo = ( CWnd* ) m_pPages[ m_TabCtrl.GetCurSel ( ) ] )
-		{
-			m_pActiveTab->ShowWindow ( SW_HIDE );
-			m_pActiveTab = m_pInfo;
-			m_pActiveTab->ShowWindow ( SW_SHOW );
-			m_TabCtrl.UpdateWindow ( );
-			m_pActiveTab->UpdateWindow ( );
-			ActiveTabID = m_TabCtrl.GetCurSel ( );
-		}
-	*pResult = 0;
 }
 
 void CWikiBase::OnPaint ( void )
@@ -193,26 +172,37 @@ void CWikiBase::ShowLeftMenu ( )
 
 void CWikiBase::OnBLMenuButtonClick ( UINT uiID )
 {
-	if ( uiID == IDC_B_LEFT_MENU_MAIN || uiID == IDC_B_LEFT_MENU_USER || uiID == IDC_B_LEFT_MENU_STATS )
+	if ( uiID == IDC_B_LEFT_MENU_MAIN || uiID == IDC_B_LEFT_MENU_USER )
 		LeftMenuClear ( );
 
 	switch ( uiID )
 	{
 	case IDC_B_LEFT_MENU_MAIN:
 		isLeftMenuMain = true;
+		if ( ActiveTabID != 0 )
+		{
+			m_pPages[ ActiveTabID ]->ShowWindow ( SW_HIDE );
+			m_pPages[ 0 ]->ShowWindow ( SW_SHOW );
+			m_pPages[ 0 ]->UpdateWindow ( );
+			ActiveTabID = 0;
+		}
 		break;
 	case IDC_B_LEFT_MENU_USER:
 		isLeftMenuUser = true;
-		break;
-	case IDC_B_LEFT_MENU_STATS:
-		isLeftMenuStats = true;
+		if ( ActiveTabID != 1 )
+		{
+			m_pPages[ ActiveTabID ]->ShowWindow ( SW_HIDE );
+			m_pPages[ 1 ]->ShowWindow ( SW_SHOW );
+			m_pPages[ 1 ]->UpdateWindow ( );
+			ActiveTabID = 1;
+		}
 		break;
 	case IDC_B_LEFT_OPENER:
 		ShowLeftMenu ( );
 		break;
 	}
 
-	if ( uiID == IDC_B_LEFT_MENU_MAIN || uiID == IDC_B_LEFT_MENU_USER || uiID == IDC_B_LEFT_MENU_STATS )
+	if ( uiID == IDC_B_LEFT_MENU_MAIN || uiID == IDC_B_LEFT_MENU_USER )
 		LeftMenuSelectOpt ( );
 }
 
@@ -232,7 +222,6 @@ void CWikiBase::CreateChildControls ( void )
 
 	b_lM_Main.Create ( L"Главная", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth, 40, theApp.WindowWidth + 199, 80 ), this, IDC_B_LEFT_MENU_MAIN );
 	b_lM_User.Create ( L"Участник", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth, 90, theApp.WindowWidth + 199, 130 ), this, IDC_B_LEFT_MENU_USER );
-	b_lM_Stats.Create ( L"Статистика", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth, 140, theApp.WindowWidth + 199, 180 ), this, IDC_B_LEFT_MENU_STATS );
 
 	b_CloseApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
 	b_HideApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
@@ -240,7 +229,6 @@ void CWikiBase::CreateChildControls ( void )
 	b_lM_Opener.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
 	b_lM_Main.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
 	b_lM_User.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
-	b_lM_Stats.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
 
 	b_CloseApp.SetFont ( &f_bTopMenu );
 	b_HideApp.SetFont ( &f_bTopMenu );
@@ -248,56 +236,29 @@ void CWikiBase::CreateChildControls ( void )
 	b_lM_Opener.SetFont ( &f_blM_Opener );
 	b_lM_Main.SetFont ( &f_blM_Std );
 	b_lM_User.SetFont ( &f_blM_Std );
-	b_lM_Stats.SetFont ( &f_blM_Std );
 
 	b_Title.Draggable = true;
 
-
-
-	/*
-	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 220, 10, 350, 40 ), this, IDC_B_OPTIONS );
-	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 40 ), this, IDC_B_TITLE );
-	b_Options.SetFont ( &f_TitleButBig );
-	b_Title.SetFont ( &f_TitleButBig );
-	b_Title.Draggable = true;
-
-	m_TabCtrl.Create ( TCS_TABS | TCS_FIXEDWIDTH | WS_CHILD | WS_VISIBLE,
-					   CRect ( 10, 50, 575, 350 ), this, IDC_CMAINTAB );
 
 	m_pPages.push_back ( new CWikiBasePage1 );
-	TCITEM tcItem1;
-	tcItem1.mask = TCIF_TEXT;
-	tcItem1.pszText = _T ( "Tab #1" );
-	m_TabCtrl.InsertItem ( 0, &tcItem1 );
-	m_pPages[ 0 ]->Create ( NULL, NULL, NULL, CRect ( 20, 85, 365, 340 ), this, NULL, NULL );
-	(( CWikiBasePage1 *) m_pPages[ 0 ])->CreateChildControls ( );
+	m_pPages[ 0 ]->Create ( NULL, NULL, NULL, CRect ( 10, 40, 540, 340 ), this, NULL, NULL );
+	( ( CWikiBasePage1 * ) m_pPages[ 0 ] )->CreateChildControls ( );
 	m_pPages[ 0 ]->UpdateWindow ( );
-	m_pPages[ 0 ]->ShowWindow ( SW_HIDE );
+	m_pPages[ 0 ]->ShowWindow ( SW_SHOW );
 
 	m_pPages.push_back ( new CWikiBasePage2 );
-	TCITEM tcItem2;
-	tcItem2.mask = TCIF_TEXT;
-	tcItem2.pszText = _T ( "Tab #2" );
-	m_TabCtrl.InsertItem ( 1, &tcItem2 );
-	m_pPages[ 1 ]->Create ( NULL, NULL, NULL, CRect ( 100, 85, 565, 340 ), this, NULL, NULL );
+	m_pPages[ 1 ]->Create ( NULL, NULL, NULL, CRect ( 10, 40, 540, 340 ), this, NULL, NULL );
 	( ( CWikiBasePage2 * ) m_pPages[ 1 ] )->CreateChildControls ( );
 	m_pPages[ 1 ]->UpdateWindow ( );
 	m_pPages[ 1 ]->ShowWindow ( SW_HIDE );
 
-	m_pActiveTab = m_pPages[ 0 ];
 	ActiveTabID = 0;
-
-	m_TabCtrl.SetFont ( &f_TitleButBig );
-
-	m_TabCtrl.ShowWindow ( SW_HIDE );
-	*/
 }
 
 void CWikiBase::LeftMenuClear ( )
 {
 	isLeftMenuMain = false;
 	isLeftMenuUser = false;
-	isLeftMenuStats = false;
 }
 
 void CWikiBase::LeftMenuSelectOpt ( )
@@ -306,66 +267,12 @@ void CWikiBase::LeftMenuSelectOpt ( )
 		b_lM_Main.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBMainColors );
 	else
 		b_lM_Main.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBGrayColors );
+
 	if ( isLeftMenuUser )
 		b_lM_User.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBMainColors );
 	else
 		b_lM_User.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBGrayColors );
-	if ( isLeftMenuStats )
-		b_lM_Stats.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBMainColors );
-	else
-		b_lM_Stats.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBGrayColors );
 
 	b_lM_Main.RedrawWindow ( );
 	b_lM_User.RedrawWindow ( );
-	b_lM_Stats.RedrawWindow ( );
-}
-
-CWikiBasePage1::CWikiBasePage1 ( )
-{
-}
-CWikiBasePage1::~CWikiBasePage1 ( )
-{
-}
-BOOL CWikiBasePage1::PreCreateWindow ( CREATESTRUCT& cs )
-{
-	if ( !CWnd::PreCreateWindow ( cs ) )
-		return FALSE;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass ( CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, ::LoadCursor ( NULL, IDC_ARROW ), reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL );
-	return TRUE;
-}
-void CWikiBasePage1::CreateChildControls ( void )
-{
-	SetWindowText ( theApp.app_title );
-
-	xCreateFastFont ( f_TitleButBig, 20, 600, _T ( "Jura" ) );
-
-	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 250, 130 ), this, IDC_BBBAT3 );
-	b_Options.SetFont ( &f_TitleButBig );
-}
-
-CWikiBasePage2::CWikiBasePage2 ( )
-{
-}
-CWikiBasePage2::~CWikiBasePage2 ( )
-{
-}
-BOOL CWikiBasePage2::PreCreateWindow ( CREATESTRUCT& cs )
-{
-	if ( !CWnd::PreCreateWindow ( cs ) )
-		return FALSE;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass ( CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, ::LoadCursor ( NULL, IDC_ARROW ), reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL );
-	return TRUE;
-}
-void CWikiBasePage2::CreateChildControls ( void )
-{
-	SetWindowText ( theApp.app_title );
-
-	xCreateFastFont ( f_TitleButBig, 20, 600, _T ( "Jura" ) );
-
-	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 260, 10, 550, 130 ), this, IDC_BBBAT4 );
-	b_Options.SetFont ( &f_TitleButBig );
 }

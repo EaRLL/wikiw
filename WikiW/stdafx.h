@@ -50,6 +50,10 @@
 #endif
 
 #include "ver.h"
+
+#include <iostream>
+#include <vector>
+
 #include <time.h>
 #include <fstream>
 #pragma comment(lib,"Version.lib")

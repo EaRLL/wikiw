@@ -9,8 +9,8 @@
 #define IDC_B_TITLEAPP                  101
 #define IDC_B_CLOSEAPP                  102
 #define IDC_B_HIDEAPP                   103
-#define IDC_BBBAT3                      104
-#define IDC_BBBAT4                      105
+#define IDC_TIMEBTN1                    1041
+#define IDC_TIMEBTN2                    1051
 #define IDC_CMAINTAB                    106
 #define IDR_MAINFRAME                   128
 #define IDR_WikiWTYPE                   130
@@ -19,7 +19,6 @@
 #define IDC_B_LEFT_OPENER               9000
 #define IDC_B_LEFT_MENU_MAIN            9001
 #define IDC_B_LEFT_MENU_USER            9002
-#define IDC_B_LEFT_MENU_STATS           9003
 
 // Next default values for new objects
 // 

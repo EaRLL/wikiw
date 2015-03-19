@@ -80,7 +80,7 @@ void xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName
 
 void xInitFont ( CString nFontName )
 {
-	/*int nResults = */AddFontResourceEx ( nFontName, FR_PRIVATE, NULL );
+	AddFontResourceEx ( nFontName, FR_PRIVATE, NULL );
 }
 
 CString xGetTime ( )
