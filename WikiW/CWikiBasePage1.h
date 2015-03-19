@@ -23,8 +23,17 @@ class CWikiBasePage1 : public CWnd
 public:
 	CWikiBasePage1 ( );
 	virtual ~CWikiBasePage1 ( );
+
 	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
 	void CreateChildControls ( void );
-	CFlatButton b_Options;
+
+	CFlatButton b_Refresh;
 	CFont f_TitleButBig;
+
+	CStatic l_cmndShrp;
+protected:
+	BOOL OnEraseBkgnd ( CDC* pDC );
+	void OnRefreshClick ( void );
+	//HBRUSH OnCtlColor ( CDC* pDC, CWnd* pWnd, UINT nCtlColor );
+	DECLARE_MESSAGE_MAP ( )
 };

@@ -68,8 +68,8 @@ BOOL CWikiWApp::InitInstance()
 	if ( rcMonitorCheck.bottom < WindowHeight )
 		WindowHeight = WindowHeight + ( WindowHeight - rcMonitorCheck.bottom );
 
-	WindowTop = ( int ) round ( ( rcMonitor.bottom - WindowHeight ) / 2 );
-	WindowLeft = ( int ) round ( ( rcMonitor.right - WindowWidth ) / 2 );
+	WindowTop = ( int ) round ( ( rcMonitor.bottom - WindowHeight ) / 2 ) - 200;
+	WindowLeft = ( int ) round ( ( rcMonitor.right - WindowWidth ) / 2 ) - 1500 ;
 
 	pFrame->SetWindowPos ( NULL, WindowLeft, WindowTop, WindowWidth, WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
 	pFrame->CreateChildControls ( );

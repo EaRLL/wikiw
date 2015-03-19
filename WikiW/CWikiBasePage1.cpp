@@ -21,12 +21,34 @@
 #include "wBase.h"
 #include "CWikiBasePage1.h"
 
+BEGIN_MESSAGE_MAP ( CWikiBasePage1, CWnd )
+	ON_WM_ERASEBKGND ( )
+	ON_WM_NCHITTEST ( )
+	//ON_WM_CTLCOLOR ( )
+	ON_BN_CLICKED ( IDC_PANEL_MAIN_REFRESH, OnRefreshClick )
+END_MESSAGE_MAP ( )
+
 CWikiBasePage1::CWikiBasePage1 ( )
 {
 }
+
 CWikiBasePage1::~CWikiBasePage1 ( )
 {
 }
+
+BOOL CWikiBasePage1::OnEraseBkgnd ( CDC* pDC )
+{
+	CBrush backBrush ( so.APP_COLOR_BG );
+	CBrush* pOldBrush = pDC->SelectObject ( &backBrush );
+	CRect rect;
+	pDC->GetClipBox ( &rect );
+	pDC->PatBlt ( rect.left, rect.top, rect.Width ( ), rect.Height ( ), PATCOPY );
+	pDC->SelectObject ( pOldBrush );
+	pDC->FrameRect ( rect, &so.APP_COLOR_BORDER );
+
+	return TRUE;
+}
+
 BOOL CWikiBasePage1::PreCreateWindow ( CREATESTRUCT& cs )
 {
 	if ( !CWnd::PreCreateWindow ( cs ) )
@@ -36,11 +58,71 @@ BOOL CWikiBasePage1::PreCreateWindow ( CREATESTRUCT& cs )
 
 	return TRUE;
 }
+
 void CWikiBasePage1::CreateChildControls ( void )
 {
-	xCreateFastFont ( f_TitleButBig, 20, 600, _T ( "Verdana" ) );
+	xCreateFastFont ( f_TitleButBig, 14, 600, _T ( "Tahoma" ) );
 
-	b_Options.Create ( L"Настройки", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 10, 200, 60 ), this, IDC_TIMEBTN1 );
-	b_Options.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
-	b_Options.SetFont ( &f_TitleButBig );
+	b_Refresh.Create ( L"Обновить", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 420, 250, 520, 290 ), this, IDC_PANEL_MAIN_REFRESH );
+	b_Refresh.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
+	b_Refresh.SetFont ( &f_TitleButBig );
+	//this->EnableWindow(0);
+
+	l_cmndShrp.Create ( L"Текст", WS_CHILD | WS_VISIBLE, CRect ( 10, 10, 520, 120 ), this, IDC_PANEL_MAIN_LABEL ); //L"Текст\r\n123"
+	l_cmndShrp.SetFont ( &f_TitleButBig );
+
+
+}
+
+/*HBRUSH CWikiBasePage1::OnCtlColor ( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
+{
+	UINT id = pWnd->GetDlgCtrlID ( );
+	if ( id == IDC_PANEL_MAIN_LABEL )
+	{
+		pDC->SetTextColor ( so.APP_COLOR_TEXT );
+		pDC->SetBkColor ( so.APP_COLOR_TEXT_BG );
+		return ( HBRUSH )::GetStockObject ( NULL_BRUSH );
+	}
+	else
+	{
+		return ( HBRUSH )::GetStockObject ( NULL_BRUSH );
+	}
+}*/
+
+void CWikiBasePage1::OnRefreshClick ( void )
+{
+	CString strData = _T ( "" );
+
+	CInternetSession mySession;
+
+	CHttpFile *pHttpFile;
+	char inBuf[ 10000 ];
+	UINT nBytesRead;
+
+	try
+	{
+		// Open HTTP file
+		pHttpFile = ( CHttpFile * ) mySession.OpenURL ( L"http://google.com/" );
+	}
+	catch ( CInternetException )
+	{
+		l_cmndShrp.SetWindowText ( L"Received Exception from OpenURL()" );
+		l_cmndShrp.UpdateWindow ( );
+	}
+
+	if ( pHttpFile == NULL )
+	{
+		l_cmndShrp.SetWindowText ( L"Error in OpenURL" );
+		l_cmndShrp.UpdateWindow ( );
+	}
+	else
+	{
+		// Read from file
+		nBytesRead = pHttpFile->Read ( inBuf, sizeof( inBuf ) );
+		strData.Format ( L"Read %d bytes", nBytesRead );
+		l_cmndShrp.SetWindowText ( strData );
+		l_cmndShrp.UpdateWindow ( );
+	}
+
+	b_Refresh.SetWindowText ( theApp.app_title );
 }
