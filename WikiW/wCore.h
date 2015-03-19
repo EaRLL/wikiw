@@ -70,7 +70,7 @@ public:
 		CBrush   BORDER_CDOWN = RGB ( 0, 112, 194 );
 		COLORREF   FILL_CDOWN = RGB ( 0, 112, 194 );
 		COLORREF   TEXT_CDOWN = RGB ( 235, 235, 235 );
-	} b_FlatBMainColors;
+	} FlatBMainColors;
 
 	struct sFlatBGrayColors
 	{
@@ -83,19 +83,7 @@ public:
 		CBrush   BORDER_CDOWN = RGB ( 49, 49, 52 );
 		COLORREF   FILL_CDOWN = RGB ( 49, 49, 52 );
 		COLORREF   TEXT_CDOWN = RGB ( 235, 235, 235 );
-	} b_FlatBGrayColors;
-
-	/*
-	CBrush   COLOR_FBTN_BORDER_NORMAL = RGB ( 0, 122, 204 ); // CFlatButton
-	COLORREF   COLOR_FBTN_FILL_NORMAL = RGB ( 0, 122, 204 ); // CFlatButton
-	COLORREF   COLOR_FBTN_TEXT_NORMAL = RGB ( 245, 245, 245 ); // CFlatButton
-	CBrush   COLOR_FBTN_BORDER_HOVER  = RGB ( 10, 132, 214 ); // CFlatButton
-	COLORREF   COLOR_FBTN_FILL_HOVER  = RGB ( 10, 132, 214 ); // CFlatButton
-	COLORREF   COLOR_FBTN_TEXT_HOVER  = RGB ( 255, 255, 255 ); // CFlatButton
-	CBrush   COLOR_FBTN_BORDER_CDOWN  = RGB ( 0, 112, 194 ); // CFlatButton
-	COLORREF   COLOR_FBTN_FILL_CDOWN  = RGB ( 0, 112, 194 ); // CFlatButton
-	COLORREF   COLOR_FBTN_TEXT_CDOWN  = RGB ( 235, 235, 235 ); // CFlatButton
-	*/
+	} FlatBGrayColors;
 };
 
 extern xWOptions so;

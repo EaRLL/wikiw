@@ -36,11 +36,27 @@ public:
 	virtual void CreateChildControls ( void );
 	virtual ~CWikiBase ( );
 
+	// { left menu
+		CFlatButton b_lM_Opener, b_lM_Main, b_lM_User, b_lM_Stats; // Left menu buttons
+		CFont f_blM_Opener, f_blM_Std; // Buttons font
+
+		BOOL isLeftMenuVisible = false;
+
+		void ShowLeftMenu ( );
+
+		BOOL isLeftMenuMain = true;
+		BOOL isLeftMenuUser = false;
+		BOOL isLeftMenuStats = false;
+
+		void OnBLMenuButtonClick ( UINT nID );  // Button click
+
+		void LeftMenuClear ( );
+		void LeftMenuSelectOpt ( );
+	// } left menu
+
 	BOOL isWindowMinimized = false;
-	BOOL isLeftMenuVisible = false;
-	CFlatButton b_Options, b_Title, b_CloseApp, b_HideApp, // main
-				b_lM_Opener, b_lM_Main, b_lM_User; // Left menu
-	CFont f_blM_Main, f_bTopMenu;
+	CFlatButton b_Options, b_Title, b_CloseApp, b_HideApp; // main
+	CFont f_bTopMenu;
 	CTabCtrl m_TabCtrl;
 
 	CWnd *m_pActiveTab;
@@ -51,7 +67,6 @@ protected:
 	DECLARE_DYNAMIC ( CWikiBase )
 	void OnBHideAppClick ( void );
 	void OnBCloseAppClick ( void );
-	void OnBLMOpenerClick ( void );
 
 	void OnSelchangingTab ( NMHDR* pNMHDR, LRESULT* pResult );
 	void OnSelchangeTab ( NMHDR* pNMHDR, LRESULT* pResult );

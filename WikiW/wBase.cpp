@@ -32,7 +32,7 @@ BEGIN_MESSAGE_MAP ( CWikiBase, CFrameWnd )
 	ON_NOTIFY ( TCN_SELCHANGING, IDC_CMAINTAB, OnSelchangingTab )
 	ON_BN_CLICKED ( IDC_B_HIDEAPP, OnBHideAppClick )
 	ON_BN_CLICKED ( IDC_B_CLOSEAPP, OnBCloseAppClick )
-	ON_BN_CLICKED ( IDC_B_LEFT_OPENER, OnBLMOpenerClick )
+	ON_CONTROL_RANGE ( BN_CLICKED, IDC_B_LEFT_OPENER, IDC_B_LEFT_MENU_STATS, OnBLMenuButtonClick )
 END_MESSAGE_MAP ( )
 
 CWikiBase::CWikiBase ( )
@@ -105,8 +105,8 @@ void CWikiBase::OnWindowPosChanging ( WINDOWPOS* lpwndpos )
 		theApp.WindowTop = rcMonitor.top;
 		theApp.WindowLeft = rcMonitor.left;
 
-		theApp.app_title.Format ( _T ( "%d, %d" ), theApp.WindowTop, theApp.WindowLeft );
-		SetWindowText ( theApp.app_title );
+		//theApp.app_title.Format ( _T ( "%d, %d" ), theApp.WindowTop, theApp.WindowLeft );
+		//SetWindowText ( theApp.app_title );
 	}
 }
 
@@ -148,7 +148,6 @@ void CWikiBase::OnBHideAppClick ( void )
 {
 	ShowWindow ( SW_MINIMIZE );
 	isWindowMinimized = true;
-	return afx_msg void ( );
 }
 
 void CWikiBase::OnBCloseAppClick ( void )
@@ -159,21 +158,18 @@ void CWikiBase::OnBCloseAppClick ( void )
 		TRACE0 ( "\n Ошибка 7. Окно не было разрушено \n" );
 		exit ( 7 );
 	}
-	return afx_msg void ( );
 }
 
-void CWikiBase::OnBLMOpenerClick ( void )
+void CWikiBase::ShowLeftMenu ( )
 {
 	if ( isLeftMenuVisible )
 	{
 		theApp.WindowWidth = theApp.WindowWidth - 200;
-		theApp.WindowLeft = theApp.WindowLeft + 200;
 		this->SetWindowPos ( NULL, theApp.WindowLeft, theApp.WindowTop, theApp.WindowWidth, theApp.WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
 
 		isLeftMenuVisible = false;
-		b_lM_Opener.SetWindowText ( L"«" );
+		b_lM_Opener.SetWindowText ( L"»" );
 
-		b_lM_Opener.MoveWindow ( CRect ( 10, 30, 50, 349 ) );
 		b_CloseApp.MoveWindow ( CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ) );
 		b_HideApp.MoveWindow ( CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ) );
 		b_Title.MoveWindow ( CRect ( 1, 1, theApp.WindowWidth - 60, 30 ) );
@@ -182,45 +178,77 @@ void CWikiBase::OnBLMOpenerClick ( void )
 	else
 	{
 		theApp.WindowWidth = theApp.WindowWidth + 200;
-		theApp.WindowLeft = theApp.WindowLeft - 200;
-
 		this->SetWindowPos ( NULL, theApp.WindowLeft, theApp.WindowTop, theApp.WindowWidth, theApp.WindowHeight, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING );
 
 		isLeftMenuVisible = true;
-		b_lM_Opener.SetWindowText ( L"»" );
+		b_lM_Opener.SetWindowText ( L"«" );
 
-		b_lM_Opener.MoveWindow ( CRect ( 210, 30, 250, 349 ) );
 		b_CloseApp.MoveWindow ( CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ) );
 		b_HideApp.MoveWindow ( CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ) );
 		b_Title.MoveWindow ( CRect ( 1, 1, theApp.WindowWidth - 60, 30 ) );
 		UpdateWindow ( );
 
 	}
-	return afx_msg void ( );
+}
+
+void CWikiBase::OnBLMenuButtonClick ( UINT uiID )
+{
+	if ( uiID == IDC_B_LEFT_MENU_MAIN || uiID == IDC_B_LEFT_MENU_USER || uiID == IDC_B_LEFT_MENU_STATS )
+		LeftMenuClear ( );
+
+	switch ( uiID )
+	{
+	case IDC_B_LEFT_MENU_MAIN:
+		isLeftMenuMain = true;
+		break;
+	case IDC_B_LEFT_MENU_USER:
+		isLeftMenuUser = true;
+		break;
+	case IDC_B_LEFT_MENU_STATS:
+		isLeftMenuStats = true;
+		break;
+	case IDC_B_LEFT_OPENER:
+		ShowLeftMenu ( );
+		break;
+	}
+
+	if ( uiID == IDC_B_LEFT_MENU_MAIN || uiID == IDC_B_LEFT_MENU_USER || uiID == IDC_B_LEFT_MENU_STATS )
+		LeftMenuSelectOpt ( );
 }
 
 void CWikiBase::CreateChildControls ( void )
 {
 	SetWindowText ( theApp.app_title );
 
-	xCreateFastFont ( f_blM_Main, 26, 600, _T ( "Tahoma" ) );
+	xCreateFastFont ( f_blM_Opener, 26, 600, _T ( "Tahoma" ) );
+	xCreateFastFont ( f_blM_Std, 16, 400, _T ( "Tahoma" ) );
 	xCreateFastFont ( f_bTopMenu, 16, 400, _T ( "Tahoma" ) );
 
 	b_CloseApp.Create ( L"X", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 30, 1, theApp.WindowWidth - 1, 30 ), this, IDC_B_CLOSEAPP );
 	b_HideApp.Create ( L"_", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 60, 1, theApp.WindowWidth - 30, 30 ), this, IDC_B_HIDEAPP );
 	b_Title.Create ( theApp.app_title, WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 1, 1, theApp.WindowWidth - 60, 30 ), this, IDC_B_TITLEAPP );
 
-	b_lM_Opener.Create ( L"«", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 10, 30, 50, 349 ), this, IDC_B_LEFT_OPENER );
+	b_lM_Opener.Create ( L"»", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth - 50, 30, theApp.WindowWidth - 10, 349 ), this, IDC_B_LEFT_OPENER );
 
-	b_CloseApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBMainColors );
-	b_HideApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBMainColors );
-	b_Title.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBMainColors );
-	b_lM_Opener.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.b_FlatBGrayColors );
+	b_lM_Main.Create ( L"Главная", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth, 40, theApp.WindowWidth + 199, 80 ), this, IDC_B_LEFT_MENU_MAIN );
+	b_lM_User.Create ( L"Участник", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth, 90, theApp.WindowWidth + 199, 130 ), this, IDC_B_LEFT_MENU_USER );
+	b_lM_Stats.Create ( L"Статистика", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( theApp.WindowWidth, 140, theApp.WindowWidth + 199, 180 ), this, IDC_B_LEFT_MENU_STATS );
+
+	b_CloseApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
+	b_HideApp.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
+	b_Title.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
+	b_lM_Opener.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
+	b_lM_Main.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
+	b_lM_User.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
+	b_lM_Stats.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
 
 	b_CloseApp.SetFont ( &f_bTopMenu );
 	b_HideApp.SetFont ( &f_bTopMenu );
 	b_Title.SetFont ( &f_bTopMenu );
-	b_lM_Opener.SetFont ( &f_blM_Main );
+	b_lM_Opener.SetFont ( &f_blM_Opener );
+	b_lM_Main.SetFont ( &f_blM_Std );
+	b_lM_User.SetFont ( &f_blM_Std );
+	b_lM_Stats.SetFont ( &f_blM_Std );
 
 	b_Title.Draggable = true;
 
@@ -265,6 +293,32 @@ void CWikiBase::CreateChildControls ( void )
 	*/
 }
 
+void CWikiBase::LeftMenuClear ( )
+{
+	isLeftMenuMain = false;
+	isLeftMenuUser = false;
+	isLeftMenuStats = false;
+}
+
+void CWikiBase::LeftMenuSelectOpt ( )
+{
+	if ( isLeftMenuMain )
+		b_lM_Main.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBMainColors );
+	else
+		b_lM_Main.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBGrayColors );
+	if ( isLeftMenuUser )
+		b_lM_User.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBMainColors );
+	else
+		b_lM_User.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBGrayColors );
+	if ( isLeftMenuStats )
+		b_lM_Stats.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBMainColors );
+	else
+		b_lM_Stats.b_Colors = reinterpret_cast< CFlatButton::sColors* >( &so.FlatBGrayColors );
+
+	b_lM_Main.RedrawWindow ( );
+	b_lM_User.RedrawWindow ( );
+	b_lM_Stats.RedrawWindow ( );
+}
 
 CWikiBasePage1::CWikiBasePage1 ( )
 {

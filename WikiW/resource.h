@@ -16,9 +16,10 @@
 #define IDR_WikiWTYPE                   130
 #define IDI_MAINICON                    316
 #define IDB_PNG1                        317
-#define IDC_B_LEFT_OPENER               7000
-#define IDC_B_LEFT_MENU_MAIN            7001
-#define IDC_B_LEFT_MENU_USER            7002
+#define IDC_B_LEFT_OPENER               9000
+#define IDC_B_LEFT_MENU_MAIN            9001
+#define IDC_B_LEFT_MENU_USER            9002
+#define IDC_B_LEFT_MENU_STATS           9003
 
 // Next default values for new objects
 // 
