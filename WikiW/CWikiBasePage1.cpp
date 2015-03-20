@@ -124,39 +124,63 @@ void CWikiBasePage1::OnRefreshClick ( void )
 	CString strData = _T ( "" );
 	CString strData2 = _T ( "" );
 
-	HINTERNET connect = InternetOpen ( L"MyBrowser", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0 );
+	CString strUserAgent = _T ( "" );
 
-	if ( !connect )
+	strUserAgent.Format ( _T ( "WikiW/%d.%d.%d.%d" ), APP_VERSION_MAJOR, APP_VERSION_MINOR, APP_VERSION_REVISION, APP_VERSION_BUILD );
+
+	HINTERNET hInternet = InternetOpenA ( ( LPCSTR ) strUserAgent.GetBuffer ( strUserAgent.GetLength ( ) ), INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0 );
+
+	if ( !hInternet )
 	{
+		DWORD ErrorNum = GetLastError ( );
 		l_cmndShrp.SetWindowText ( L"Connection Failed or Syntax error" );
+		InternetCloseHandle ( hInternet );
 		return;
 	}
 
-	HINTERNET OpenAddress = InternetOpenUrl ( connect, L"http://rutracker.org/forum/", NULL, 0, INTERNET_FLAG_PRAGMA_NOCACHE | INTERNET_FLAG_KEEP_CONNECTION, 0 );
+	HINTERNET hConnection = InternetConnectA ( hInternet, "google.com", 80, "", "", INTERNET_SERVICE_HTTP, 0, 0 ); //enter url here
 
-	if ( !OpenAddress )
+	if ( !hConnection )
 	{
 		DWORD ErrorNum = GetLastError ( );
 		l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
-		InternetCloseHandle ( connect );
+		InternetCloseHandle ( hInternet );
+		InternetCloseHandle ( hConnection );
 		return;
 	}
 
+	HINTERNET hData = HttpOpenRequestA ( hConnection, "GET", "/", NULL, NULL, NULL, INTERNET_FLAG_KEEP_CONNECTION, 0 );
+
+	if ( !hData )
+	{
+		DWORD ErrorNum = GetLastError ( );
+		l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
+		InternetCloseHandle ( hInternet );
+		InternetCloseHandle ( hConnection );
+		InternetCloseHandle ( hData );
+		return;
+	}
+
+	HttpSendRequestA ( hData, NULL, 0, NULL, 0 );
+
 	char DataReceived[ 12288 ];
+
 	DWORD NumberOfBytesRead = 0;
-	while ( InternetReadFile ( OpenAddress, DataReceived, sizeof( DataReceived ), &NumberOfBytesRead ) && NumberOfBytesRead )
+
+	while ( InternetReadFile ( hData, DataReceived, sizeof( DataReceived ), &NumberOfBytesRead ) && NumberOfBytesRead )
 	{
 		strData2 = DataReceived;
 		strData2 = strData2.Left ( NumberOfBytesRead );
-		strData.Append( strData2 );
+		strData.Append ( strData2 );
 	}
 
 	cMc_Line.SetWindowText ( strData );
 
-	InternetCloseHandle ( OpenAddress );
-	InternetCloseHandle ( connect );
+	InternetCloseHandle ( hInternet );
+	InternetCloseHandle ( hConnection );
+	InternetCloseHandle ( hData );
 
-	l_cmndShrp.SetWindowText ( L"OpenURL()" );
+	l_cmndShrp.SetWindowText ( strUserAgent );
 	cMc_Line.UpdateWindow ( );
 
 	b_Refresh.SetWindowText ( L"End" );

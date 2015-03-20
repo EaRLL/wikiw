@@ -27,7 +27,7 @@
 #define _AFX_ALL_WARNINGS
 #include <afxwin.h>
 //#include <afxext.h>
-//#include <afxinet.h>
+#include <afxinet.h>
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>
