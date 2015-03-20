@@ -27,13 +27,16 @@ public:
 	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
 	void CreateChildControls ( void );
 
-	CFlatButton b_Refresh;
+	CFlatButton b_Refresh, b_Get1, b_Get2, b_Get3, b_Get4;
 	CFont f_TitleButBig;
+
+	CEdit cMc_Line;
 
 	CStatic l_cmndShrp;
 protected:
 	BOOL OnEraseBkgnd ( CDC* pDC );
 	void OnRefreshClick ( void );
+	void OnGet1Click ( void );
 	//HBRUSH OnCtlColor ( CDC* pDC, CWnd* pWnd, UINT nCtlColor );
 	DECLARE_MESSAGE_MAP ( )
 };

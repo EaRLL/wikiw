@@ -26,6 +26,7 @@ BEGIN_MESSAGE_MAP ( CWikiBasePage1, CWnd )
 	ON_WM_NCHITTEST ( )
 	//ON_WM_CTLCOLOR ( )
 	ON_BN_CLICKED ( IDC_PANEL_MAIN_REFRESH, OnRefreshClick )
+	ON_BN_CLICKED ( IDC_PANEL_MAIN_GET1, OnGet1Click )
 END_MESSAGE_MAP ( )
 
 CWikiBasePage1::CWikiBasePage1 ( )
@@ -66,10 +67,16 @@ void CWikiBasePage1::CreateChildControls ( void )
 	b_Refresh.Create ( L"Обновить", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 420, 250, 520, 290 ), this, IDC_PANEL_MAIN_REFRESH );
 	b_Refresh.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBGrayColors );
 	b_Refresh.SetFont ( &f_TitleButBig );
-	//this->EnableWindow(0);
 
-	l_cmndShrp.Create ( L"Текст", WS_CHILD | WS_VISIBLE, CRect ( 10, 10, 520, 120 ), this, IDC_PANEL_MAIN_LABEL ); //L"Текст\r\n123"
+	b_Get1.Create ( L"Скоп.текст", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, CRect ( 310, 250, 410, 290 ), this, IDC_PANEL_MAIN_GET1 );
+	b_Get1.b_Colors = reinterpret_cast<CFlatButton::sColors*>( &so.FlatBMainColors );
+	b_Get1.SetFont ( &f_TitleButBig );
+
+	l_cmndShrp.Create ( L"Текст", WS_CHILD | WS_VISIBLE, CRect ( 10, 10, 520, 55 ), this, IDC_PANEL_MAIN_LABEL ); //L"Текст\r\n123"
 	l_cmndShrp.SetFont ( &f_TitleButBig );
+
+	cMc_Line.Create ( WS_CHILD | WS_VISIBLE | ES_WANTRETURN | WS_HSCROLL | WS_VSCROLL | ES_MULTILINE, CRect ( 10, 60, 520, 240 ), this, 1552 );
+	cMc_Line.SetFont ( &f_TitleButBig );
 
 
 }
@@ -89,40 +96,68 @@ void CWikiBasePage1::CreateChildControls ( void )
 	}
 }*/
 
+void CWikiBasePage1::OnGet1Click ( void )
+{
+	CString strData = L"";
+	cMc_Line.GetWindowText ( strData );
+
+	std::string s = CW2A ( strData.GetString ( ) );
+
+	OpenClipboard ( );
+	EmptyClipboard ( );
+	HGLOBAL hg = GlobalAlloc ( GMEM_MOVEABLE, s.size ( ) + 1 );
+	if ( !hg )
+	{
+		CloseClipboard ( );
+		return;
+	}
+	memcpy ( GlobalLock ( hg ), s.c_str ( ), s.size ( ) + 1 );
+	GlobalUnlock ( hg );
+	SetClipboardData ( CF_TEXT, hg );
+	CloseClipboard ( );
+	GlobalFree ( hg );
+
+}
+
 void CWikiBasePage1::OnRefreshClick ( void )
 {
 	CString strData = _T ( "" );
+	CString strData2 = _T ( "" );
 
-	CInternetSession mySession;
+	HINTERNET connect = InternetOpen ( L"MyBrowser", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0 );
 
-	CHttpFile *pHttpFile;
-	char inBuf[ 10000 ];
-	UINT nBytesRead;
-
-	try
+	if ( !connect )
 	{
-		// Open HTTP file
-		pHttpFile = ( CHttpFile * ) mySession.OpenURL ( L"http://google.com/" );
-	}
-	catch ( CInternetException )
-	{
-		l_cmndShrp.SetWindowText ( L"Received Exception from OpenURL()" );
-		l_cmndShrp.UpdateWindow ( );
+		l_cmndShrp.SetWindowText ( L"Connection Failed or Syntax error" );
+		return;
 	}
 
-	if ( pHttpFile == NULL )
+	HINTERNET OpenAddress = InternetOpenUrl ( connect, L"http://rutracker.org/forum/", NULL, 0, INTERNET_FLAG_PRAGMA_NOCACHE | INTERNET_FLAG_KEEP_CONNECTION, 0 );
+
+	if ( !OpenAddress )
 	{
-		l_cmndShrp.SetWindowText ( L"Error in OpenURL" );
-		l_cmndShrp.UpdateWindow ( );
-	}
-	else
-	{
-		// Read from file
-		nBytesRead = pHttpFile->Read ( inBuf, sizeof( inBuf ) );
-		strData.Format ( L"Read %d bytes", nBytesRead );
-		l_cmndShrp.SetWindowText ( strData );
-		l_cmndShrp.UpdateWindow ( );
+		DWORD ErrorNum = GetLastError ( );
+		l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
+		InternetCloseHandle ( connect );
+		return;
 	}
 
-	b_Refresh.SetWindowText ( theApp.app_title );
+	char DataReceived[ 12288 ];
+	DWORD NumberOfBytesRead = 0;
+	while ( InternetReadFile ( OpenAddress, DataReceived, sizeof( DataReceived ), &NumberOfBytesRead ) && NumberOfBytesRead )
+	{
+		strData2 = DataReceived;
+		strData2 = strData2.Left ( NumberOfBytesRead );
+		strData.Append( strData2 );
+	}
+
+	cMc_Line.SetWindowText ( strData );
+
+	InternetCloseHandle ( OpenAddress );
+	InternetCloseHandle ( connect );
+
+	l_cmndShrp.SetWindowText ( L"OpenURL()" );
+	cMc_Line.UpdateWindow ( );
+
+	b_Refresh.SetWindowText ( L"End" );
 }
