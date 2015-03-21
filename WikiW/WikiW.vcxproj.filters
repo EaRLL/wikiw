@@ -16,6 +16,21 @@
     <Filter Include="Resource Files\fonts">
       <UniqueIdentifier>{43c7d508-f564-41db-9f7d-0bbdade08d08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Third Party">
+      <UniqueIdentifier>{6d2b5104-1918-4073-a645-d1f9be8b7194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\rapidjson">
+      <UniqueIdentifier>{869a5e63-165b-4384-9262-7c4673da97ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\rapidjson\error">
+      <UniqueIdentifier>{585ea677-8312-4ebe-9ff4-23e1b36a6d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\rapidjson\internal">
+      <UniqueIdentifier>{c991407f-49a8-4258-a4aa-2f4d390f7f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\rapidjson\msinttypes">
+      <UniqueIdentifier>{eb095863-10ea-48da-948a-5d98bfe99257}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -44,6 +59,90 @@
     </ClInclude>
     <ClInclude Include="CWikiBasePage1.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\allocators.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\document.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\encodedstream.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\encodings.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\filereadstream.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\filestream.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\filewritestream.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\memorybuffer.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\memorystream.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\prettywriter.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\rapidjson.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\reader.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\stringbuffer.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\writer.h">
+      <Filter>Third Party\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\error\en.h">
+      <Filter>Third Party\rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\error\error.h">
+      <Filter>Third Party\rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\biginteger.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\diyfp.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\dtoa.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\ieee754.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\itoa.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\meta.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\pow10.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\stack.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\strfunc.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\internal\strtod.h">
+      <Filter>Third Party\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\msinttypes\inttypes.h">
+      <Filter>Third Party\rapidjson\msinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\rapidjson\msinttypes\stdint.h">
+      <Filter>Third Party\rapidjson\msinttypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

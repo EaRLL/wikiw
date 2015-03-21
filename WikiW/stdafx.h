@@ -54,14 +54,17 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include <time.h>
 #include <fstream>
 #include <wininet.h>
 
-#include "windows.h"
+//#include "windows.h"
 #include "string.h"
-#include <direct.h>
+//#include <direct.h>
+
+#include <thread>
 
 #pragma comment(lib,"wininet.lib")
 #pragma comment(lib,"Version.lib")

@@ -18,6 +18,12 @@
 */
 #pragma once
 
+#include "thirdparty/rapidjson/document.h"
+#include "thirdparty/rapidjson/writer.h"
+#include "thirdparty/rapidjson/stringbuffer.h"
+
+UINT threadGet ( LPVOID Param );
+
 class CWikiBasePage1 : public CWnd
 {
 public:
@@ -33,6 +39,7 @@ public:
 	CEdit cMc_Line;
 
 	CStatic l_cmndShrp;
+
 protected:
 	BOOL OnEraseBkgnd ( CDC* pDC );
 	void OnRefreshClick ( void );

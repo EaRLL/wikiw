@@ -119,7 +119,7 @@ void CWikiBasePage1::OnGet1Click ( void )
 
 }
 
-void CWikiBasePage1::OnRefreshClick ( void )
+UINT threadGet ( LPVOID Param )
 {
 	CString strData = _T ( "" );
 	CString strData2 = _T ( "" );
@@ -133,32 +133,33 @@ void CWikiBasePage1::OnRefreshClick ( void )
 	if ( !hInternet )
 	{
 		DWORD ErrorNum = GetLastError ( );
-		l_cmndShrp.SetWindowText ( L"Connection Failed or Syntax error" );
+		( ( CWikiBasePage1 * ) Param )->l_cmndShrp.SetWindowText ( L"Connection Failed or Syntax error" );
 		InternetCloseHandle ( hInternet );
-		return;
+		return 0;
 	}
 
-	HINTERNET hConnection = InternetConnectA ( hInternet, "google.com", 80, "", "", INTERNET_SERVICE_HTTP, 0, 0 ); //enter url here
+	HINTERNET hConnection = InternetConnectA ( hInternet, "ru.wikipedia.org", 80, "", "", INTERNET_SERVICE_HTTP, 0, 0 );
 
 	if ( !hConnection )
 	{
 		DWORD ErrorNum = GetLastError ( );
-		l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
+		( ( CWikiBasePage1 * ) Param )->l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
 		InternetCloseHandle ( hInternet );
 		InternetCloseHandle ( hConnection );
-		return;
+		return 0;
 	}
 
-	HINTERNET hData = HttpOpenRequestA ( hConnection, "GET", "/", NULL, NULL, NULL, INTERNET_FLAG_KEEP_CONNECTION, 0 );
+	//HINTERNET hData = HttpOpenRequestA ( hConnection, "GET", "/wiki/Чёрная дыра", NULL, NULL, NULL, INTERNET_FLAG_KEEP_CONNECTION, 0 );
+	HINTERNET hData = HttpOpenRequestA ( hConnection, "GET", "/w/api.php?action=query&meta=siteinfo&siprop=namespaces&format=json", NULL, NULL, NULL, INTERNET_FLAG_KEEP_CONNECTION, 0 );
 
 	if ( !hData )
 	{
 		DWORD ErrorNum = GetLastError ( );
-		l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
+		( ( CWikiBasePage1 * ) Param )->l_cmndShrp.SetWindowText ( L"Failed to open URL \nError No: " + ErrorNum );
 		InternetCloseHandle ( hInternet );
 		InternetCloseHandle ( hConnection );
 		InternetCloseHandle ( hData );
-		return;
+		return 0;
 	}
 
 	HttpSendRequestA ( hData, NULL, 0, NULL, 0 );
@@ -173,15 +174,49 @@ void CWikiBasePage1::OnRefreshClick ( void )
 		strData2 = strData2.Left ( NumberOfBytesRead );
 		strData.Append ( strData2 );
 	}
+	
+	//### { json
+	std::string as = CW2A ( strData.GetString ( ) );
+	const char* json = as.c_str ( );
+	rapidjson::Document d;
+	d.Parse ( json );
 
-	cMc_Line.SetWindowText ( strData );
+	// 2. Modify it by DOM.
+	///rapidjson::Value& s = d[ "stars" ];
+	///s.SetInt ( s.GetInt ( ) + 1 );
+
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer ( buffer );
+	d.Accept ( writer );
+
+	rapidjson::Value& s = d[ "query" ][ "namespaces" ][ "5" ][ "*" ];
+	strData = s.GetString ( );
+
+	//strData = buffer.GetString ( );
+	//### } json
+
+	//### { encoding
+	std::string asa = CW2A ( strData.GetString ( ) );
+	int wchars_num = MultiByteToWideChar ( CP_UTF8, 0, asa.c_str ( ), -1, NULL, 0 );
+	wchar_t* wstr = new wchar_t[ wchars_num ];
+	MultiByteToWideChar ( CP_UTF8, 0, asa.c_str ( ), -1, wstr, wchars_num );
+	//### } encoding
+
+
+	( ( CWikiBasePage1 * ) Param )->cMc_Line.SetWindowText ( wstr );
 
 	InternetCloseHandle ( hInternet );
 	InternetCloseHandle ( hConnection );
 	InternetCloseHandle ( hData );
 
-	l_cmndShrp.SetWindowText ( strUserAgent );
-	cMc_Line.UpdateWindow ( );
+	( ( CWikiBasePage1 * ) Param )->l_cmndShrp.SetWindowText ( strUserAgent );
+	( ( CWikiBasePage1 * ) Param )->cMc_Line.UpdateWindow ( );
 
-	b_Refresh.SetWindowText ( L"End" );
+	( ( CWikiBasePage1 * ) Param )->b_Refresh.SetWindowText ( L"End" );
+	return 1;
+}
+
+void CWikiBasePage1::OnRefreshClick ( void )
+{
+	AfxBeginThread ( threadGet, this );
 }

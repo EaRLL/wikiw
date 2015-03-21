@@ -56,8 +56,8 @@ public:
 	INT       APP_WIDTH = 600;
 	INT       APP_HEIGHT = 350;
 
-	COLORREF APP_COLOR_BG = RGB ( 45, 45, 48 ); // wBase
-	CBrush   APP_COLOR_BORDER = RGB ( 0, 122, 204 ); // wBase
+	COLORREF APP_COLOR_BG = RGB ( 45, 45, 48 ); // wBase # 238, 239, 244
+	CBrush   APP_COLOR_BORDER = RGB ( 0, 122, 204 ); // wBase # 75,82,92
 
 	COLORREF APP_COLOR_TEXT = RGB ( 255, 255, 255 );
 	COLORREF APP_COLOR_TEXT_BG = RGB ( 45, 45, 48 );
