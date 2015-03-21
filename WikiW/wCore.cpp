@@ -100,6 +100,108 @@ CString xGetTime ( )
 	return resultSr;
 }
 
+UINT xParseWikiApiThread ( LPVOID Param )
+{
+	CString strData = _T ( "" );
+	CString strData2 = _T ( "" );
+	CString strUserAgent = _T ( "" );
+
+	( ( CWikiBasePage1 * ) Param )->b_Refresh.SetWindowText ( L"Соединение..." );
+
+	strUserAgent.Format ( _T ( "WikiW/%d.%d.%d.%d" ), APP_VERSION_MAJOR, APP_VERSION_MINOR, APP_VERSION_REVISION, APP_VERSION_BUILD );
+
+	HINTERNET hInternet = InternetOpenA ( ( LPCSTR ) strUserAgent.GetBuffer ( strUserAgent.GetLength ( ) ), INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0 );
+
+	if ( !hInternet )
+	{
+		DWORD ErrorNum = GetLastError ( );
+		( ( CWikiBasePage1 * ) Param )->b_Refresh.SetWindowText ( L"Соединение прервано" );
+		InternetCloseHandle ( hInternet );
+		return 0;
+	}
+
+	HINTERNET hConnection = InternetConnectA ( hInternet, "ru.wikipedia.org", 80, "", "", INTERNET_SERVICE_HTTP, 0, 0 );
+
+	if ( !hConnection )
+	{
+		DWORD ErrorNum = GetLastError ( );
+		( ( CWikiBasePage1 * ) Param )->b_Refresh.SetWindowText ( L"Ошибка#1" + ErrorNum );
+		InternetCloseHandle ( hInternet );
+		InternetCloseHandle ( hConnection );
+		return 0;
+	}
+
+	HINTERNET hData = HttpOpenRequestA ( hConnection, "GET", ( ( CWikiBasePage1 * ) Param )->api_url, NULL, NULL, NULL, INTERNET_FLAG_KEEP_CONNECTION, 0 );
+
+	if ( !hData )
+	{
+		DWORD ErrorNum = GetLastError ( );
+		( ( CWikiBasePage1 * ) Param )->b_Refresh.SetWindowText ( L"Ошибка#2" + ErrorNum );
+		InternetCloseHandle ( hInternet );
+		InternetCloseHandle ( hConnection );
+		InternetCloseHandle ( hData );
+		return 0;
+	}
+
+	HttpSendRequestA ( hData, NULL, 0, NULL, 0 );
+
+	char DataReceived[ 12288 ];
+
+	DWORD NumberOfBytesRead = 0;
+
+	while ( InternetReadFile ( hData, DataReceived, sizeof( DataReceived ), &NumberOfBytesRead ) && NumberOfBytesRead )
+	{
+		strData2 = DataReceived;
+		strData2 = strData2.Left ( NumberOfBytesRead );
+		strData.Append ( strData2 );
+	}
+
+	//### { json
+	std::string as = CW2A ( strData.GetString ( ) );
+	const char* json = as.c_str ( );
+	rapidjson::Document d;
+	d.Parse ( json );
+
+	// 2. Modify it by DOM.
+	///rapidjson::Value& s = d[ "stars" ];
+	///s.SetInt ( s.GetInt ( ) + 1 );
+
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer ( buffer );
+	d.Accept ( writer );
+
+	rapidjson::Value& s = d[ "query" ][ "namespaces" ][ "5" ][ "*" ];
+	strData = s.GetString ( );
+
+	//strData = buffer.GetString ( );
+	//### } json
+
+	//### { encoding
+	std::string asa = CW2A ( strData.GetString ( ) );
+	int wchars_num = MultiByteToWideChar ( CP_UTF8, 0, asa.c_str ( ), -1, NULL, 0 );
+	wchar_t* wstr = new wchar_t[ wchars_num ];
+	MultiByteToWideChar ( CP_UTF8, 0, asa.c_str ( ), -1, wstr, wchars_num );
+	//### } encoding
+
+
+	( ( CWikiBasePage1 * ) Param )->cMc_Line.SetWindowText ( wstr );
+	( ( CWikiBasePage1 * ) Param )->cMc_Line.UpdateWindow ( );
+
+	InternetCloseHandle ( hInternet );
+	InternetCloseHandle ( hConnection );
+	InternetCloseHandle ( hData );
+
+	( ( CWikiBasePage1 * ) Param )->b_Refresh.SetWindowText ( L"Данные обновлены" );
+	( ( CWikiBasePage1 * ) Param )->isConnected = false;
+	return 1;
+}
+
+CString xParseWikiApi ( LPVOID lParam )
+{
+	AfxBeginThread ( xParseWikiApiThread, lParam );
+	return L"";
+}
+
 // MonitorAPI
 struct MonitorAPI
 {

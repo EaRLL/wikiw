@@ -19,8 +19,6 @@
 #define IDC_B_LEFT_MENU_MAIN            9001
 #define IDC_B_LEFT_MENU_USER            9002
 #define IDC_PANEL_MAIN_REFRESH          1001
-#define IDC_PANEL_MAIN_LABEL            1002
-#define IDC_PANEL_MAIN_GET1             1003
 
 // Next default values for new objects
 // 

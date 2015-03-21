@@ -18,11 +18,7 @@
 */
 #pragma once
 
-#include "thirdparty/rapidjson/document.h"
-#include "thirdparty/rapidjson/writer.h"
-#include "thirdparty/rapidjson/stringbuffer.h"
-
-UINT threadGet ( LPVOID Param );
+//UINT threadGet ( LPVOID Param );
 
 class CWikiBasePage1 : public CWnd
 {
@@ -33,13 +29,13 @@ public:
 	virtual BOOL PreCreateWindow ( CREATESTRUCT& cs );
 	void CreateChildControls ( void );
 
-	CFlatButton b_Refresh, b_Get1, b_Get2, b_Get3, b_Get4;
-	CFont f_TitleButBig;
-
+	CFlatButton b_Refresh;
+	CFont f_TitleButBig, f_StatusLabel;
 	CEdit cMc_Line;
 
-	CStatic l_cmndShrp;
-
+	//params
+	BOOL isConnected = false;
+	LPCSTR api_url;
 protected:
 	BOOL OnEraseBkgnd ( CDC* pDC );
 	void OnRefreshClick ( void );

@@ -54,17 +54,19 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
-
+//#include <map>
 #include <time.h>
-#include <fstream>
+//#include <fstream>
 #include <wininet.h>
-
 //#include "windows.h"
 #include "string.h"
 //#include <direct.h>
-
-#include <thread>
+//#include <thread>
 
 #pragma comment(lib,"wininet.lib")
 #pragma comment(lib,"Version.lib")
+
+
+#include "thirdparty/rapidjson/document.h"
+#include "thirdparty/rapidjson/writer.h"
+#include "thirdparty/rapidjson/stringbuffer.h"

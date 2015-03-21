@@ -20,6 +20,7 @@
 
 #include "resource.h"
 #include "CFlatButton.h"
+#include "CWikiBasePage1.h"
 
 void      xCheckVersion ( );
 CRect     xGetMonitorWorkArea ( const CPoint& point );
@@ -28,6 +29,8 @@ CRect     xGetMonitorRect ( CWnd* pWnd );
 void      xCreateFastFont ( CFont& pFont, INT nHeight, INT nWeight, CString nFontName );
 void      xInitFont ( CString nFontName );
 CString   xGetTime ( );
+CString   xParseWikiApi ( LPVOID lParam );
+UINT      xParseWikiApiThread ( LPVOID Param );
 
 /*
 * Fonts: (xInitFont ( CString nFontName ))

@@ -86,6 +86,7 @@ void CFlatButton::OnLButtonUp ( UINT nFlags, CPoint point )
 	if ( m_bMoveWindow && set_cross_onmove )
 	{
 		::SetCursor ( AfxGetApp ( )->LoadStandardCursor ( IDC_HAND ) );
+		GetParentFrame ( )->RedrawWindow ( );
 	}
 
 	m_bMoveWindow = false;
